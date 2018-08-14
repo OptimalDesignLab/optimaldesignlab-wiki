@@ -32,7 +32,9 @@ A more complex navigation example: ----------------------------------------
 
   * # Julia
   * [Intro to Julia](pages/julia.md)
-  * [Julia in the ODL](pages/julia_odl.md)
+  * [Julia style guide](pages/julia_style.md)
+  * [Julia nomenclature](pages/julia_nomenclature.md)
+  * [Julia performance tips](pages/julia_performance.md)
   - - - -
   * # Version control
   * [git](pages/git.md)
@@ -58,7 +60,7 @@ A more complex navigation example: ----------------------------------------
   * [Using commas correctly](pages/commas.md)
   - - - -
   * # Presentations
-  * [Jean-luc Dumont](pages/presentations.md)
+  * [Thoughts on presentations](pages/presentations.md)
 
 [RPI, MANE, & SCOREC]()
 

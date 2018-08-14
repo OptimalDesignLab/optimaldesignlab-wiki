@@ -11,6 +11,8 @@ Begin by identifying what information you want to convey to the reader, then
 2) In each section, describe (in point/bullet form) what the contents of that section will be.
 3) Place your draft figures in the appropriate sections.
 
+After you have produced the outline and preliminary results/theory, you should discuss the structure and results with your co-authors (especially me, Prof. Hicken).
+
 ## Writing the Introduction
 
 Writing the introduction is probably the hardest part of creating a paper.  I recently came across a good set of questions, based on those introduced by George H. Heilmeier, that you should make sure you answer (either implicitly or explicitly) in your introduction.  Here they are:
@@ -24,4 +26,8 @@ If you have not answered these questions in the introduction...**try again**.
 
 ## Writing the Abstract
 
-I write the abstract last, since it is a summary of the paper.  The abstract should be as concise and clearly identify the most significant contributions.  It may be tempting to include details that you struggled to understand or that you find interesting, but _do not do this_.  
+I write the abstract last, since it is a summary of the paper.  The abstract should be as concise and clearly identify the most significant contributions.  It may be tempting to include details that you struggled to understand or that you find interesting, but _do not do this_.
+
+## Other Resources
+
+We have access to Joshua Schimel's book _"Writing Science: how to write papers that get cited and proposals that get funded"_ as an e-book through the RPI library.  I highly recomend this book.  We read several chapters as part of our literature review in 2017/2018, and we will likely do so again.  While the author comes from a different field, his general remarks are quite universal.

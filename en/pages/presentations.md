@@ -4,7 +4,7 @@ Scientific presentations should act like an advertisement for the related paper.
 
 Jean-luc Doumont has some good pointers about creating slides and presentations, most of which I agree with.  Before you create any presentation, whether for the lab or a conference, please review his notes, posted below.  You might also consider watching his YouTube video in the list of links below.
 
-[Doumont: traditions, templates, and group leaders](uploads/pdf/Dumont_making_better_slides.pdf)
+[Doumont: traditions, templates, and group leaders](uploads/pdf/Doumont_traditions_templates_and_group_leaders_barriers_to_effective_communication.pdf)
 
 # Useful Links
 
