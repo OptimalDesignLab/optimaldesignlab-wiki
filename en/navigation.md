@@ -71,9 +71,9 @@ A more complex navigation example: ----------------------------------------
   * # SCOREC
   * [SCOREC and CCI Systems](pages/systems.md)
 
-<!--
+<!---
 ----------------------------------------------------------------------------
--->
+--->
 
 <!--
   -- Change the Language
