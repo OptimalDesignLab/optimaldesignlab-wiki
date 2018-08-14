@@ -1,6 +1,10 @@
 README
 ======
 
+If you just want to get to the ODL wiki, use the following link:
+[http://www.optimaldesignlab.com/optimaldesignlab-wiki/](http://www.optimaldesignlab.com/optimaldesignlab-wiki/)
+
+
 First things first
 ------------------
 
