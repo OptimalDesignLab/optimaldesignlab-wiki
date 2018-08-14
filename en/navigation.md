@@ -64,6 +64,10 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # Presentations
   * [Thoughts on presentations](pages/presentations.md)
+  - - - -
+  * # Latex
+  * [Latex resources](pages/latex.md)
+  * [Beamer for presentation](pages/beamer.md)
 
 [RPI, MANE, & SCOREC]()
 
