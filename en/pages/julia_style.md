@@ -5,6 +5,7 @@ We try to adhere to the [official style recommendations](http://julia.readthedoc
 ## Naming Conventions
 
 As always, naming conventions are particularly important, so others can understand your intent from the name itself.
+
 * Function names, variable names, and filenames should be descriptive; **avoid abbreviation**.
 * **Filenames** should be all lowercase and can include underscores, unless the file corresponds to a Package name. e.g. `cubature.jl`, `test_cubature.jl`, `SummationByParts.jl` (the latter is a Package)
 * **Type names** start with a capital letter and have a capital letter for each new word, with no underscores: `MyExcitingType`.
@@ -16,6 +17,7 @@ It is up for debate whether we will allow unicode names (in UTF-8 encoding) in o
 ## Formatting Conventions
 
 The important point regarding formatting is **consistency**.  Project source code is much easier to read if it is consistent.
+
 * Each line of text in your code should be at most 80 characters long.
 * Use only spaces, and indent 2 spaces at a time.  **No tabs please!!!**
 * Function calls on one line if it fits; otherwise, wrap arguments at the parenthesis.
@@ -24,6 +26,7 @@ The important point regarding formatting is **consistency**.  Project source cod
 * Never put trailing whitespace at the end of a line.
 
 ## Documenting and Commenting Conventions
+
 ### Documenting vs. Commenting
 There are two kinds of non-code text in source files: Documentation and Comments.  The purpose of documentation is to tell other people (ie. people who did not write the code) how to use it.  The purpose of comments is to explain portions of code to someone who is trying to understand its implementation.
 
@@ -87,6 +90,7 @@ type TetSymCub{T} <: SymCub{T}
 ```
 
 Notes regarding documentation:
+
 * The documentation must be placed just before the function or type.
 * The first line after the `@doc """` should be the title, which will be the function/type name (qualified by the module name, if appropriate)
 * After the title, provide a description of what the type is for, or what the function does.
@@ -98,7 +102,8 @@ Notes regarding documentation:
 ### Comments
 Comments are placed inline with source code or at the top of a function body.  Comments generally fall into one of two categories: comments that explain the algorithm, and comments that explain individual steps in the algorithm. Comments that explain the algorithm are usually at the top of the function body, while comments explaining individual steps are usually in line with the code.
 
-Some things things that are generally commented:
+Some things hat are generally commented:
+
 * New variables
 * Purpose of loops
 * Assumptions used in the code
