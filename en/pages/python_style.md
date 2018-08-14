@@ -18,7 +18,7 @@ All names should be descriptive and ''readable''. One of Python's founding princ
 * **Attributes** can be made private by adding an underscore at the beginning, like `_var_name`. For attributes that have to be extra private, use two underscores. Otherwise, they follow the same convention as variables.
 * **Functions** follow the same naming guide as variables. 
 * **Methods** can be made private by adding an underscore at the beginning, like `_function_name`. Unlike variables, you should ''never'' use two underscores for functions.
-* **Classes** are `ClassName`. This is called [http://en.wikipedia.org/wiki/CamelCase Camel Case]. 
+* **Classes** are `ClassName`. This is called [Camel Case](http://en.wikipedia.org/wiki/CamelCase). 
 * **Instances** of these classes follow variable naming conventions, and are always lower case, separated by underscores.
 
 ## Formatting Conventions
@@ -32,7 +32,7 @@ All names should be descriptive and ''readable''. One of Python's founding princ
 
 ## Commenting Conventions
 
-We use [https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt NumPy/SciPy documentation standard] which is then automatically processed by [http://sphinx-doc.org/ Sphinx] into a searchable HTML manual. GitHub has the capability of publishing this online, and therefore all Python code should be hosted on our [https://github.com/OptimalDesignLab GitHub team page].
+We use the [NumPy/SciPy documentation standard](https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt) which is then automatically processed by [Sphinx](http://sphinx-doc.org/) into a searchable HTML manual. GitHub has the capability of publishing this online, and therefore all Python code should be hosted on our [GitHub team page](https://github.com/OptimalDesignLab).
 
 ### Files
 
