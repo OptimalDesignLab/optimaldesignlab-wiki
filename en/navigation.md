@@ -1,4 +1,4 @@
-<!--
+<!---
   -- Name of your wiki
   -- Do NOT remove the leading `#` character.
   -->
@@ -6,7 +6,7 @@
 # Optimal Design Lab Wiki
 
 
-<!--
+<!---
   -- Default theme
   -- (Read: http://dynalon.github.io/mdwiki/#!customizing.md#Theme_chooser)
   -->
@@ -17,16 +17,16 @@
 <!---
   -- Navigation
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
-  --->
+  -->
 
-<!--
+<!---
   -- [About](pages/about.md)
   -- [Download](pages/download.md)
   -->
 
 <!---
 A more complex navigation example: ----------------------------------------
-  --->
+  -->
 
 [Software Development]()
 
@@ -72,12 +72,12 @@ A more complex navigation example: ----------------------------------------
   * [SCOREC and CCI Systems](pages/systems.md)
 
 
-<!--
+<!---
   -- Change the Language
   -- Could be useful when there's more than one language wiki.
   -->
 
-<!--
+<!---
 [Change the Language]()
 
   * [English (United States)](/en_US/)
@@ -85,7 +85,7 @@ A more complex navigation example: ----------------------------------------
   * [Italian](/it/)
 -->
 
-<!--
+<!---
   -- Let the user choose a theme
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
