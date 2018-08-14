@@ -19,27 +19,57 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
+<!--
 [About](pages/about.md)
 [Download](pages/download.md)
+-->
 
-<!-- A more complex navigation example: ----------------------------------------
+<!-- A more complex navigation example: ---------------------------------------- -->
 
-[Menu Item 1]()
+[Software Development]()
 
-  * # SubMenu Heading 1
-  * [SubMenu Item 1](pages/subitem1.md)
-  * [SubMenu Item 2](pages/subitem2.md)
+  * # Julia
+  * [Intro to Julia](pages/julia.md)
+  * [Julia in the ODL](pages/julia_odl.md)
   - - - -
-  * # SubMenu Heading 2
-  * [SubMenu Item 3](pages/subitem3.md)
+  * # Version control
+  * [git](pages/git.md)
+
+[Numerical Methods]()
+
+  * # Spatial Discretization
+  * [Summation-by-parts](pages/sbp.md)
   - - - -
-  * # SubMenu Heading 3
-  * [SubMenu Item 3](pages/subitem3.md)
+  * # Linear Systems
+  * [Krylov methods](pages/krylov.md)
+  - - - -
+  * # Nonlinear Systems
+  * [Newton-Krylov](pages/nk.md)
+  - - - -
+  * # Optimization
+  * [KKT conditions](pages/kkt.md)
 
-[Menu Item 2](pages/item2.md)
+[Papers & Presentations]()
 
-[Menu Item 3](pages/item3.md)
+  * # Papers
+  * [Advice on writing](pages/writing.md)
+  * [Using commas correctly](pages/commas.md)
+  - - - -
+  * # Presentations
+  * [Jean-luc Dumont](pages/presentations.md)
 
+[RPI, MANE, & SCOREC]()
+
+  * # RPI
+  * [Office of Graduate Education](pages/oge.md)
+  - - - -
+  * # MANE
+  * [Department PhD Requirements](pages/mane_phd.md)
+  - - - -
+  * # SCOREC
+  * [SCOREC and CCI Systems](pages/systems.md)
+
+<!--
 ---------------------------------------------------------------------------- -->
 
 <!--
