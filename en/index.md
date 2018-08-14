@@ -1,5 +1,6 @@
-# It works! ;-)
+# Welcome to the Optimal Design Lab Wiki!
 
+This wiki serves as a repository of information of, by, and for members of the Optimal Design Lab.
 
 ## Section 1
 

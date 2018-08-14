@@ -3,7 +3,7 @@
   -- Do NOT remove the leading `#` character.
   -->
 
-# Your wiki name
+# Optimal Design Lab Wiki
 
 
 <!--
@@ -60,6 +60,4 @@
   -- (Read: http://dynalon.github.io/mdwiki/#!quickstart.md#Adding_a_navigation)
   -->
 
-<!--
 [gimmick:themechooser](Choose theme)
--->
