@@ -36,6 +36,9 @@ A more complex navigation example: ----------------------------------------
   * [Julia nomenclature](pages/julia_nomenclature.md)
   * [Julia performance tips](pages/julia_performance.md)
   - - - -
+  * # Python
+  * [Python style guide](pages/python_style.md)
+  - - - -
   * # Version control
   * [git](pages/git.md)
 

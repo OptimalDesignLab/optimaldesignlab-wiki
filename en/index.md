@@ -2,9 +2,18 @@
 
 This wiki serves as a repository of information for, and by, the members of the Optimal Design Lab.
 
+## Optimal Design Lab Web Resources
+
+We make extensive use of the following web resources.  Once you join the lab Prof. Hicken will send you an invitation or set up an account for each one of these services ... if he doesn't, feel free to remind him.
+
+* **Slack:** We use Slack for almost all communication. 
+* **Google Calendar:** There is a lab calendar that we use to schedule recuring lab events (e.g. status meetings) and one-on-one meetings with Prof. Hicken.
+* **Github:** We use [git](pages/git.md) for version control of software and academic papers/reports.  These git repositories are hosted on [github](https://github.com/OptimalDesignLab) to simplify collaboration
+* **Wiki:** We use this wiki to record information for future use (either ours or future members of the lab).
+
 ## Contributing to the Wiki
 
-The Wiki is written almost entirely in Markdown using the MDwiki package; see [the MDwiki site](http://dynalon.github.io/mdwiki) for more information about how MDwiki works, as well as links to how to write content in Markdown.
+The Wiki is written almost entirely in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#links) using the MDwiki package; see [the MDwiki site](http://dynalon.github.io/mdwiki) for more information about how MDwiki works, as well as links to how to write content in Markdown.
 
 There are two ways you can contribute to our wiki.
 
