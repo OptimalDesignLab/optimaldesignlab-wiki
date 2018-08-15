@@ -10,8 +10,11 @@ The lab develops and uses discretizations based on summation-by-parts (SBP) oper
 Before defining SBP operators formally, we need to introduce some notation and conventions.
 
 In the following discussion, a quantity in bold font will denote a vector.  Usually, we will use such vectors to represent functions evaluated at specific points in space.  For example, suppose \\(u(x,y)\\) is a function defined for all \\((x,y) \in \Omega \subset \mathbb{R}^{2}\\), and we are interested in the value of \\(u\\) at some subset of points in
+
 $$ S_{\Omega} \equiv \{ (x_{i},y_{i}) \}_{i=1}^{n} \subset \Omega $$.
+
 The values of \\(u\\) evaluated at \\(S\\) will be denoted by the vector \\(\mathbf{u} \in \mathbb{R}^{n}\\) where
+
 $$[\mathbf{u}]_{i} = u_i = u(x_i,y_i), \qquad \forall i=1,2,\ldots,n.$$
 
 We will also introduce and use several matrices, which we will denote with san-serif type, e.g. \\(\mathsf{A} \in \mathbb{R}^{n\times n}\\).  For us, matrices will represent the discretization of linear operators acting on functions like \\(u\\).  A relevant example is the partial derivative operator \\(\partial u/\partial x\\) evaluated at the points \\(S_{\Omega}\\), which can be represented as \\(\mathsf{D}_x \mathbf{u}\\).
