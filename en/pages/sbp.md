@@ -9,21 +9,20 @@ The lab develops and uses discretizations based on summation-by-parts (SBP) oper
 
 Before defining SBP operators formally, we need to introduce some notation and conventions.
 
-In the following discussion, a quantity in bold font will denote a vector.  Usually, we will use such vectors to represent functions evaluated at specific points in space.  For example, suppose \\(u(x,y)\\) is a function defined for all \\((x,y) \in \Omega \subset \mathbb{R}^{2}\\), and we are interested in the value of \\(u\\) at some subset of points \\(S_{\Omega} \equiv \{(x_{i},y_{i})\}_{i=1}^{n} \subset \Omega\\).  The values of \\(u\\) evaluated at \\(S\\) will be denoted by the vector \\(\mathbf{u} \in \mathbb{R}^{n}\\) where
+In the following discussion, a quantity in bold font will denote a vector.  Usually, we will use such vectors to represent functions evaluated at specific points in space.  For example, suppose \\(u(x,y)\\) is a function defined for all \\((x,y) \in \Omega \subset \mathbb{R}^{2}\\), and we are interested in the value of \\(u\\) at some subset of points \\( S_{\Omega} \equiv \{(x_{i},y_{i})\}_{i=1}^{n} \subset \Omega \\).  The values of \\(u\\) evaluated at \\(S\\) will be denoted by the vector \\(\mathbf{u} \in \mathbb{R}^{n}\\) where
 $$[\mathbf{u}]_{i} = u_i = u(x_i,y_i), \qquad \forall i=1,2,\ldots,n.$$
 
-We will also introduce and use several matrices, which we will denote with san-serif type, e.g. \\(\mathsf{A} \in \mathbb{R}^{n\times n}\\).  Matrices represent the discretization of linear operators acting on functions like \\(u\\).  A relevant example is the partial derivative operator \\(\partial u/\partial x\\) evaluated at the points \\(S_{\Omega}\\), which can be represented as \\(\mathsf{D}_x \mathbf{u}\\).
+We will also introduce and use several matrices, which we will denote with san-serif type, e.g. \\(\mathsf{A} \in \mathbb{R}^{n\times n}\\).  For us, matrices will represent the discretization of linear operators acting on functions like \\(u\\).  A relevant example is the partial derivative operator \\(\partial u/\partial x\\) evaluated at the points \\(S_{\Omega}\\), which can be represented as \\(\mathsf{D}_x \mathbf{u}\\).
 
 Finally, in order to precisely define the accuracy of an SBP derivative operator, we need to indicate its action on a polynomial basis.  For example, a particular SBP operator might differentiate all polynomials up to total degree \\(p\\) exactly.  The polynomials of total degree \\(p\\) form a vector space, which we will denote by \\(\mathbb{P}^{p}\\).  There are an infinite number of different polynomials of degree \\(p\\), which would seem to complicate how we indiate the accuracy of derivative operator.  For example, in two spatial dimensions \\(\mathbb{P}^{2}\\) includes any polynomial of the form \\(a + bx + cy + dxy + ex^2 + fy^2\\), where the coefficients \\(a,b,c,d,e,f\\) can take on any values.  Fortunately, since \\(\mathbb{P}^{p}\\) is a finite-dimensional vector space, it has a basis, and it is sufficient to show that the derivative operator is exact for this basis.  
 
 In two spatial dimensions, one possible polynomial basis for \\(\mathbb{P}^{p}\\) is given by the monomial set
-$$\{p_{qr}(x,y) \equiv x^q y^r \;|\; q,r \geq 0, q+r \leq p\}$$.
+$$ \{p_{qr}(x,y) \equiv x^q y^r \;|\; q,r \geq 0, q+r \leq p\} $$.
 In the defintiion below, it will be convenient to use a single index for the elements in the basis.  This can be achieved by ordering \\(q\\) and \\(r\\) in a particular way:
-$$p_{k}(x,y) \equiv x^q y^r,\qquad k = \frac{q}{(q+1)}{2} + r + 1,\quad r \leq q.$$
+$$ p_{k}(x,y) \equiv x^q y^r,\qquad k = \frac{q}{(q+1)}{2} + r + 1,\quad r \leq q. $$
 For example, for \\(\mathbb{P}^{2}\\) we would have the following associations:
-$$p_1(x,y) = 1,\quad p_2(x,y) = x, \quad p_3(x,y) = y,\quad
-p_4(x,y) = x^2,\quad p_5(x,y) = xy, \quad p_6(x,y) = y^2.$$
-Notice that the basis has \\((p+1)(p+2)/2\\) elements in two spatial dimensions.  More generally, in \\(d\\) dimensions the polynomial basis has \\({p+d}\choose{d}\\) elements.
+$$p_1(x,y) = 1,\quad p_2(x,y) = x, \quad p_3(x,y) = y,\quad p_4(x,y) = x^2,\quad p_5(x,y) = xy, \quad p_6(x,y) = y^2.$$
+Notice that the basis has \\( (p+1)(p+2)/2 \\) elements in two spatial dimensions.  More generally, in \\(d\\) dimensions the polynomial basis has \\( {p+d}\choose{d} \\) elements.
 
 ### SBP Operator Defintion
 
