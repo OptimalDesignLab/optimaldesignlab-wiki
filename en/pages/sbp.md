@@ -10,7 +10,7 @@ The lab develops and uses discretizations based on summation-by-parts (SBP) oper
 Before defining SBP operators formally, we need to introduce some notation and conventions.
 
 In the following discussion, a quantity in bold font will denote a vector.  Usually, we will use such vectors to represent functions evaluated at specific points in space.  For example, suppose \\(u(x,y)\\) is a function defined for all \\((x,y) \in \Omega \subset \mathbb{R}^{2}\\), and we are interested in the value of \\(u\\) at some subset of points in
-$$S_{\Omega} \equiv \{(x_{i},y_{i})\}_{i=1}^{n} \subset \Omega$$.
+$$ S_{\Omega} \equiv \{ (x_{i},y_{i}) \}_{i=1}^{n} \subset \Omega $$.
 The values of \\(u\\) evaluated at \\(S\\) will be denoted by the vector \\(\mathbf{u} \in \mathbb{R}^{n}\\) where
 $$[\mathbf{u}]_{i} = u_i = u(x_i,y_i), \qquad \forall i=1,2,\ldots,n.$$
 
@@ -30,11 +30,10 @@ Notice that the basis has \\( (p+1)(p+2)/2 \\) elements in two spatial dimension
 
 In the following definition, \\(\mathbf{p}_{k}'\\) is the \\(x\\)-derivative of the polynomial \\(\mathbf{p}_{k}\\) evaluated at the nodes \\(S_{\Omega}\\).
 
-**Definition: Two-dimensional summation-by-parts operator: Consider an open and
-  bounded domain \\(\Omega \subset \mathbb{R}^{2}\\) with a piecewise-smooth boundary \\(\Gamma\\).  The matrix \\(\mathsf{D}_x\\) is a degree \\(p\\) SBP approximation to the first derivative \\(\frac{\partial}{\partial x}\\) on the nodes \\(S_{\Omega}=\left\{(x_{i},y_{i})\right\}_{i=1}^{n}\\) if
+**Definition (Two-dimensional summation-by-parts operator):** Consider an open and bounded domain \\(\Omega \subset \mathbb{R}^{2}\\) with a piecewise-smooth boundary \\(\Gamma\\).  The matrix \\(\mathsf{D}_x\\) is a degree \\(p\\) SBP approximation to the first derivative \\(\frac{\partial}{\partial x}\\) on the nodes \\( S_{\Omega}=\left\{(x_{i},y_{i})\right\}_{i=1}^{n} \\) if
 
-1. \\(\mathsf{D}_x \mathbf{p}_{k} = \mathbf{p}_k',\qquad\forall\; k \in \{ 1,2,\ldots,(p+1)(p+2)/2\\)
-2. \\(\mathsf{D}_x = \mathsf{H}^{-1}\mathsf{Q}_{x}\\), where \\(\mathsf{M}\\) is symmetric positive-definite; and
+1. \\( \mathsf{D}_x \mathbf{p}_{k} = \mathbf{p}_k',\qquad\forall\; k \in \{ 1,2,\ldots,(p+1)(p+2)/2 \\)
+2. \\( \mathsf{D}_x = \mathsf{H}^{-1}\mathsf{Q}_{x} \\), where \\(\mathsf{M}\\) is symmetric positive-definite; and
 3. \\(\mathsf{Q}_x = \mathsf{S}_x + \mathsf{E}_x\\), where \\(\mathsf{S}_x^T = -\mathsf{S}_x^T\\), \\(\mathsf{E}_x = \mathsf{E}_x^T\\), and \\(\mathsf{E}_x\\) satsifies 
 $$\mathbf{p}_k^T \mathsf{E}_x \mathbf{p}_{m} = \oint_{\partial \Omega} p_k(x,y) p_m(x,y) n_x \,d\Gamma,\qquad \forall\; k,m \in \{1,2,\ldots,(r+1)(r+2)/2\}$$
 
