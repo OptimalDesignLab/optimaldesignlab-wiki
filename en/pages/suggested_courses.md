@@ -1,5 +1,6 @@
 # Advice on courses
 Here is some advice on classes that have been helpful towards advancing our & the lab's research goals. 
+Within each section, the ordering is insignificant.
 
 ## Essential
 
