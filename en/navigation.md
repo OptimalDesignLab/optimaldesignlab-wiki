@@ -79,6 +79,9 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # SCOREC
   * [SCOREC and CCI Systems](pages/systems.md)
+  - - - -
+  * # Miscellaneous Lab Advice
+  * [Suggested courses to take](pages/suggested_courses.md)
 
 
 <!---
