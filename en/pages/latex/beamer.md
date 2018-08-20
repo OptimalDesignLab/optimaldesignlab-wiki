@@ -73,7 +73,8 @@ Beamer elements, and control the color.
 So you set up `beamercolorbox`'s with appropriate length, pass in `author in head/foot` or 
 whatever to set the color scheme, then put the text in that box.
 
-Here's my footer:
+Here's my footer (ignore the raw/endraw stuff, that's just a workaround to stop a markdown error for this wiki):
+{% raw %}
 ```
 \makeatletter
 \setbeamertemplate{footline}{
@@ -97,7 +98,9 @@ Here's my footer:
 }
 \makeatother
 ```
+{% endraw %}
 And here's how I set up a particular section's header:
+{% raw %}
 ```
 \makeatletter
 \setbeamertemplate{headline}{
@@ -110,6 +113,7 @@ And here's how I set up a particular section's header:
 }
 \makeatother
 ```
+{% endraw %}
 
 Here's what it looks like:
 
