@@ -41,6 +41,9 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # Version control
   * [git](pages/git.md)
+  - - - -
+  * # PDESolver/Ticon
+  * [Building PDESolver](pages/pdesolver/building.md)
 
 [Numerical Methods]()
 
