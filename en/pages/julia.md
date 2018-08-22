@@ -5,8 +5,9 @@ introductory material for new members of the lab.
 
 ## Documentation
 
-  The first step is to read the Julia documentation, which can be found[here](https://docs.julialang.org/en/v0.6.4/).
-  As of the time of this writing, the lab uses Julia 0.6 for all projects.  The following sections of the Julia documentation are useful.
+  The first step is to read the Julia documentation, which can be found [here](https://docs.julialang.org/en/v0.6.4/).
+  As of the time of this writing, the lab uses Julia 0.6 for all projects.
+  The following sections of the Julia documentation are useful:
 
    * Introduction
    * Getting Started
@@ -37,14 +38,14 @@ introductory material for new members of the lab.
   concepts are not clear (See the `Building Julia` Section below)
 
   A few sections of the documentation look interesting at first sight but are
-  actually not
+  actually not:
 
    * Linear Algebra: this section describes many of the linear algebra functions
      in Julia and is a good place to look up specific factorizations
-     or operations, but is not meant to be read like the
-     other other sections of documentation.
+     or operations, but is not meant to be read like the other other sections of
+     documentation.
    * The `Tasks` subsection under Control Flow: tasks are not threads (such as
-     pthreads or OpenMP threads) and have very different performance characteristics
+     pthreads or OpenMP threads) and have very different performance characteristics.
      Don't use them.
    * Parallel Computing: our lab does not use Julia's parallel computing features.
      Instead we use the Julia wrappers for [MPI](https://github.com/JuliaParallel/MPI.jl).
@@ -55,8 +56,7 @@ introductory material for new members of the lab.
 
 ## Obtaining Julia
 
-Binaries are available for Windows, Linux, and macOS on the
-[Julia website](https://julialang.org/), under the `Downloads` tab.  Make sure
+Binaries are available for Windows, Linux, and macOS on the [Julia website](https://julialang.org/), under the `Downloads` tab.  Make sure
 to get the version of Julia the lab is currently using (v0.6 at the time of this
 writing).
 
