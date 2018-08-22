@@ -1,290 +1,766 @@
-# Julia Performance Techniques
+# Julia Concepts and Performance
 
-There are a number of idioms useful for writing high performance Julia, as well as a few syntactic conveniences that should be avoided.
+This page describes some features of Julia that are particularly important
+for writing the kind of code this lab writes.  Studying these examples
+should give you a better understand of Julia itself, and how to write
+faster code.
 
-## Array Referencing and Copying
-Julia allows users to create references to arrays, which just creates an additional name for the same array (no data is copied, and changes to the array made using one name are reflected when using the other), copy an array, which copies the underlying data and creates a new, fully independent array, and deepcopy, which recursively copies the array and its contents.  For example
+Each example in this page can be copied into a source file and run in Julia
+Readers are encouraged to do so and to experiment with these examples to
+make sure they understand the concepts.
 
+
+
+## Mutable vs immutable
+```julia
+println("\n\nMutable vs Immutable")
+
+struct Foo  # immutable
+  a::Int
+end
+
+mutable struct Bar # muable
+  a::Int
+end
+
+function sumit(arr::AbstractVector)
+
+  val = 0
+  for i=1:length(arr)
+    val += arr[i].a
+  end
+
+  return val
+end
+
+
+N = 100000
+arr_foo = Array{Foo}(N)  # this is an array of Foo objects stored contiguously
+                         # in memory
+arr_bar = Array{Bar}(N)  # this is an array of pointers to Bar objects
+for i=1:N
+  arr_foo[i] = Foo(i)  # uses the space in the array for the new Foo object
+  arr_bar[i] = Bar(i)  # allocates a Bar object on the heap writes the pointer
+                       # array
+                       # each object is allocated individually, and is likely
+                       # not near the any of the other objects in memory
+end
+
+println("\nWarm up time:")
+@time sumit(arr_foo)
+@time sumit(arr_bar)
+
+println("\nFinal time:")
+@time sumit(arr_foo)
+@time sumit(arr_bar)
+
+# around 8-10x slower for the mutable struct
 ```
-A = rand(3,3)
-B = A  # B and A are different names for the same array
 
-C = copy(A)  # C is a new array with values copied from A
-D = deepcopy(A)  # D is a new array, with values copied from A
-```
+## Array allocation
 
-Now, it appears from this example that `copy` and `deepcopy` are the same.  This is true if the elements of the array are immutable.  While most Julia objects are passed by reference, immutable objects are copied.  This means that the array A stores the actual object, not a reference to it.  When the copy function is called, it copies the contents of the array, the immutable objects, to the new array.  When deepcopy is called, it copies the contents of the array and anything the contents of the array might point to.  To see the distinction:
-
-```
-A = Array(Array{Int,1}, 2)  # array of array with 2 elements
-A[1] = [1,2,3]
-A[2] = [4,5,6]
-
-B = copy(A)  # copies the references in A, so the arrays [1,2,3] and [4,5,6] are still shared
-
-B[1] = [7,8,9]  # now the first element of B is a reference to a different array, A[1] is unchanged 
-
-C = deepcopy(A)  # copies A and the arrays within A 
-```
-
-## Column Major
-Julia arrays are stored in column major format.  This is the same as Fortran and Matlab, but difference than C/C++.  This is important if you pass a 2D (or higher) array to C, the C code will see it as being transposed.
-
-It is significantly faster to loop along the columns of a column major array than the rows, so all arrays should be created so that the dimension that will be iterated over the fastest is the first dimension.
-
-## ArrayViews
-Using slice notation (ie. the colon operator) on arrays is an inefficient operations that allocates a significant amount of memory.  
-This can be avoided using the `ArrayViews` package.  
-For example
-
-```
+```julia
+println("\n\nArray Allocation")
 using ArrayViews
-A = rand(10, 10)
-b = A[:, 1]
-b_view = view[A, :, 1]
+
+function calcEulerFlux(q::AbstractVector, flux::AbstractVector)
+
+  const gamma = 0.4  # const has no effect, but is helpfuler for other readers
+  p = 0.4*(q[3] - 0.5*(q[2]*q[2] + q[3]*q[3])/q[1])
+
+  flux[1] = q[2]
+  flux[2] = q[2]*q[2]/q[1] + p
+  flux[3] = q[2]*q[3]/q[1]
+  flux[4] = (q[4] + p)/q[1]
+
+  return nothing
+end
+
+
+function calcFlux1(q::AbstractArray, weights::AbstractVector, res::AbstractArray)
+
+  # verify arrays are the right size
+  @assert size(q, 1) == 4
+  @assert length(weights) == 4
+  @assert size(res, 1) == 4
+  @assert size(q, 2) == size(res, 2)
+
+  for i=1:size(q, 2)
+    q_i = unsafe_aview(q, :, i)
+    flux = Array{Float64}(4)  # new array is allocated inside the loop
+    calcEulerFlux(q_i, flux)
+
+    for j=1:4
+      res[j, i] = weights[j]*flux[j]
+    end
+  end
+
+  return nothing
+end
+
+function calcFlux2(q::AbstractArray, weights::AbstractVector, res::AbstractArray)
+
+  # verify arrays are the right size
+  @assert size(q, 1) == 4
+  @assert length(weights) == 4
+  @assert size(res, 1) == 4
+  @assert size(q, 2) == size(res, 2)
+
+  flux = Array{Float64}(4)  # new array is allocated outside the loop
+  for i=1:size(q, 2)
+    q_i = unsafe_aview(q, :, i)
+    calcEulerFlux(q_i, flux)
+
+    for j=1:4
+      res[j, i] = weights[j]*flux[j]
+    end
+  end
+
+  return nothing
+end
+
+N = 10000
+q = rand(4, N)
+weights = rand(4)
+res = zeros(4, N)
+
+println("\nWarm up time:")
+@time calcFlux1(q, weights, res)
+@time calcFlux2(q, weights, res)
+
+println("\Final time:")
+@time calcFlux1(q, weights, res)
+@time calcFlux2(q, weights, res)
+
+# first version is 3.6x slower than the second
 ```
 
-The vectors `b` and `b_view` are similar in that they allow access to the values in first column of `A`, but they do so in different ways
-`b` is a copy of the first column of `A`, while `b_view` is a reference to it.  Changing an element of `b_view` changes the corresponding element in `A`.  Changing an element of `b` does not.
-This can be beneficial for high performance code because copying the data takes time so it should be avoided whenever possible.  The elements of `b_view` can be accessed just like the elements of any array.  Note that views can be taken that are not contiguous in memory, for example taking a view of the first row of a matrix.  The `view` constructor can take an integer, a range, or a colon for any of the index values.  Also, composition of views is allow, so you can take a view of a view to get a subset of the array pointed to by the original view.
+
+## Slices allocate a temporary
+
+```julia
+println("\n\nSlice Allocation")
+
+function copy1(arr_in::AbstractArray, arr_out::AbstractArray)
+
+  @assert size(arr_in, 1) == size(arr_out, 1)
+  @assert size(arr_in, 2) == size(arr_out, 2)
+
+  for i=1:size(arr_in, 2)
+    arr_out[:, i] = arr_in[:, i]  # using slices allocates a temporary array
+  end
+
+  return nothing
+end
+
+function copy2(arr_in::AbstractArray, arr_out::AbstractArray)
+
+  @assert size(arr_in, 1) == size(arr_out, 1)
+  @assert size(arr_in, 2) == size(arr_out, 2)
+
+  for i=1:size(arr_in, 2)
+    for j=1:size(arr_in, 1)  # extra for loop instead of arr[:, i]
+      arr_out[j, i] = arr_in[j, i]
+    end
+  end
+
+  return nothing
+end
 
 
-The copy and deepcopy behaviors are as follows:
+N = 10000
+q_in  = rand(4, N)
+q_out = rand(4, N)
 
+println("\nWarm up time:")
+@time copy1(q_in, q_out)
+@time copy2(q_in, q_out)
+
+println("\nFinal time:")
+@time copy1(q_in, q_out)
+@time copy2(q_in, q_out)
+
+# first version is 25x slower
 ```
-b_copy = copy(b_view)  # b_copy is an array containing the elements pointed to by b_view
 
-b_deepcopy = deepcopy(b_view) # copies entire underlying array (A) and creates a new ArrayView pointing to it
-```
+## Pass-by-sharing
 
-Note that a `copy` of an ArrayView produces an Array that is a copy of only the part A that the ArrayView allows access to, in this case the first column of A.  A `deepcopy` copies the ArrayView and the entire underling matrix (A in the example above) and create a new ArrayView referencing it.
+```julia
+println("\n\nPass-by-sharing")
 
-### UnsafeView
-The ArrayViews package has a second type corresponding to all the regular `view` types, called an `unsafe_view`.  `unsafe_view`s use a different method to store the the connection to the original array (a raw pointer rather than a Julia reference), which is potentially smaller in memory and slightly faster to access.  The limitation is that the `unsafe_view`s only work correctly on arrays whose elements are `isbits` types.  For this reason, use of `unsafe_view`s are not recommended in ODL codes.
+mutable struct FooInner  # mutable object to be stored inside other objects
+  i::Int
+  j::Int
+end
 
-## SubArrays
-Another method of getting a view of an array is SubArrays.  SubArrays are constructed similarly to ArrayViews:
+struct Foo1
+  a::Int
+  inner::FooInner
+  arr::Array{Int, 1}
+end
 
-```
-A = rand(3,3)
-a_sub = sub(A, :, 1)  # get first column of A
-```
+mutable struct Bar1
+  a::Int
+  inner::FooInner
+  arr::Array{Int, 1}
+end
 
-Modifying elements of `a_sub` modify the corresponding elements in `A`.  Like ArrayViews, it is permissible to use ranges, the colon operator, or integer values for any of the indices.  Taking non-contiguous views is allows, with the same performance penalty as accessing the original array non-contiguously.
+function test_foo1(obj::Foo1)
 
-### SubArrays vs. ArrayViews
-So, whats the difference between SubArrays and ArrayViews? SubArrays are somewhat more expensive to construct than ArrayViews, both in terms of time and memory.  When used inside a loop, it is preferable to use an ArrayView.  Both ArrayViews and SubArrays can be passed to C code.
+  obj.a = 1  # error: cannot mutate Foo1
+  obj.inner = FooInner(1, 2)  # error: cannot mutate Foo1.  Mutable objects
+                              # are allocated on the heap and pointers to them
+                              # are stored inside other object (structs,
+                              # mutable structs, and arrays).  Because Foo1
+                              # is immutable, the pointer cannot be changed
+                              # to point to a different object
+  obj.inner.i = 1 # ok: even though Foo1 is immutable, FooInner is mutable
 
-## Matrix Vector and Matrix Matrix Multiplication
-Efficiently multiplying vectors and matrices is a non-trivial task.  Julia provides this capability through OpenBlas, a high performance BLAS implementation.  The Julia multiplication operator, when applied to a matrix and a vector or a matrix and another matrix, dispatches to the proper BLAS routines.  For large matrices, the OpenBlas implementation  is very efficient, but for small ones it is not.  This difference can be important for some application, including finite element and finite difference codes that do a lot of small matrix operations.  
+  obj.arr = Array{Int,}(3)  # error: arrays are like mutable structs, the
+                            # pointer stored inside Foo1 cannot be changed
+                            # to point to a different object
+  obj.arr[1] = 2  # assigning to an element of an array mutates that object
+                  # just like obj.inner.i mutates FooInner but not Foo1
 
-By default, OpenBlas is multi-threaded, so it will use all CPU cores on a shared memory machine.  For high performance computing, there is typically one Julia process running on every CPU core, so we want the OpenBlas library called by each Julia process to use one thread.  To do this,  set the environmental variable `OPENBLAS_NUM_THREADS` to `1` before launching Julia. The matrix vector and matrix matrix multiplication routines in the package `PDESolverCommon` were bench-marked against the OpenBlas equivalents (with bounds checking disabled).  The results are shown in the figures.  For matrix-vector multiplication, the `PDESolverCommon` implementation is faster for square matrices of size 128 or less, and is approximately the same for matrices of size 2000 or larger.  For matrix-matrix multiplication, the `PDESolverCommon` implementation is faster for square matrices of size 28 or less.  For very small matrices, the OpenBlas routines are slower by a factor of 5 or more, indicating it is very advantageous to use the `PDESolverCommon` ones when doing small matrix math.
+  return nothing
+end
 
-![](uploads/images/Matmat_compare.dat.png "Matrix-matrix multiplication performance comparison for square matrices")
-![](uploads/images/Matvec_compare.dat.png "Matrix-vector multiplication performance comparison for square matrices")
+function test_bar1(obj::Bar1)
 
-## Filling Arrays
-The `fill!(arr, val)` efficiently fills the array with the specified value.  This is the preferred method of, for example, zeroing out an array.
+  obj.a = 1 # ok: Bar1 is mutable, so the value can change
+  obj.inner = FooInner(1, 2)  # ok: Bar1 is mutable so the pointer to the
+                              # FooInner object can be modified
+  obj.inner.i = 1  # ok, FooInner is mutable
+  obj.arr = Array{Int}(3)  # ok: creates a new array and assigns it to
+                           # obj.arr (updating the pointer to point to a new
+                           # object).  The old array will be deallocated if
+                           # there are no other references to it
+  obj.arr[1] = 1  # ok: arr is mutable
 
-## Using b[:]
-`b[:]` makes a copy of the array.  Using ArrayViews or SubArrays wherever possible.
-
-## Concrete Types with Concrete Fields
-Julia's type inference system compiles a version of a function for each unique set of argument types.  So if we define a function: <br />
-
-```
-function addNums(a, b) 
-  return a + b 
+  return nothing
 end
 ```
 
-If we call this function with two Float64 values and then two Int64 values, the function will be compiled twice, each the first version for floating point number and the second for integers.  Because the types of all arguments are known (just like in C), the the compiled functions will be just as fast as C functions.
 
-A problem happens if we have something like this: 
+## Variables are names, best to think about the underlying values
 
-```
-type type1  
-  a::Number  
-end  
+```julia
+println("\n\nVariables are names, better to think about the values")
 
-function addFields(obj1, obj2) 
-  return obj1.a + obj2.a) 
-end 
+function test_foo2()
 
-obj1 = type1(1) 
-obj2 = type1(1) 
-addFields(obj1, obj2) 
-```
+  a = Bar1(1, FooInner(1, 2), rand(Int, 2))
+  b = a  # b refers to Bar1(1, FooInner(1, 2), rand(Int, 2))
+  c = b  # c refers to the Bar1(1, FooInner(1,2), rand(Int, 2))  (there is only 1 object
+  b = Bar1(2, FooInner(2, 3), rand(Int, 3))
+  # c still points to the Array{Int}(2)
+  # this can be verified by printing out c.a and b.a
 
-When addFields is compiled, it will be specialized on the type `type1`.  It will compile a version of the function that works for **any**  object of type `type1`.  Because `type1` as a field that is of type `Number`, it could be a Float64, a Float32, an Int64, and Int32, etc.  The compiler has to compile a generic version of the function because it does not know what the types of `obj1.a` and `obj2.a` will be.  This will be slow.  To remedy this, whenever good performance is required, types should have concrete types as fields, rather than abstract types.  
 
-If you want to define a type that can have fields of different types, you can parameterize a type as follows:
+  # immutables have the same semantics as mutables
+  d = Foo1(1, FooInner(1, 2), rand(Int, 2))
+  f = d
+  g = f
+  f = Foo1(2, FooInner(2, 3), rand(Int, 3))
+  # c still refers to Foo1(1, FooInner(1, 2), rand(Int, 2))
+  # to see this
+  d.inner.i = 5
+  println("d.inner.i = ", d.inner.i)
+  println("g.inner.i = ", g.inner.i)
+  println("f.inner.i = ", f.inner.i)
 
-```
-type type1{T} 
-  a::T 
-end 
-``` 
+  # as a special case, consider an immutable that contains only immutable fields
+  m = FooInner(1, 2)
+  n = m
+  # do m and n refer to the same FooInner object?  There is no way to know.
+  # The only way to find it is to change one of hte fields of m and see if
+  # the same field in n also changes.  But that is impossible because
+  # m.a = 2 is an error, precisely because FooInner is immutable.
+  # Therefore, the compiler is free to do whatever it thinks is fastest.
+  # Structs such as FooInner, which are immutable and do not contain mutable
+  # fields, either directly or indirectly through one of their fields,
+  # are calles "isbits" types, because they are defined completely by the
+  # bits they occupy in memory (ie. they do not contain references to
+  # objects elsewhere in memory).
 
-Using this definition of `type1`, `addFields` will be compiled for each value of T of each argument.  Because field `a` is of type T, the compiler knows its type, and can generate a very fast version of the function.
+  return nothing
+end
 
-## Function with Abstract Arguments
-As shown above, specifying the types of arguments to a function is optional in Julia.  If no type is specified, then there are no restrictions on the types that can be passed to the function.  If an abstract type is specified, then only types which are subtypes of the specified abstract type are allowed. If a concrete type is specified, only that type is allowed  For example:
-
-```
-function addNums(a::Number, b::Number) 
-  return a + b 
-end 
-```
-
-This function can take two argument, which must both be subtypes of `Number`, and returns their sum.  Although optional, the type specifications can serve as a kind of documentation about what the function is capable of doing.  Adding two strings is not a valid operation (Julia uses the `*` operator for string concatenation ), so this function will not accept strings as arguments.
-
-Another use of type annotations is to distinguish different methods of a function.  For example, if you wanted to define two versions of a function, one that handles integers and another that handles floating point values, this could be done as follows: 
-
-``` 
-function compare(a::Integer, b::Integer) 
-  return a < b 
-end 
-
-function compare(a::FloatingPoint, B::FloatingPoint)
-  return (a - b) < 1e-14 
-end 
+test_foo2()
 ```
 
-If there is ambiguity in what function to call, Julia prints a warning and picks one at random.
+## Indexing is mutation not assignmnet
+
+```julia
+println("\n\nIndexing is mutation, not assignment")
+
+function indexing1(arr_in::AbstractVector, arr_out::AbstractVector)
+
+  for i=1:4
+    arr_in[i] = arr_out[i]
+  end
+
+  # this is equivalent to
+  for i=1:4
+    tmp = arr_in[i]
+    setindex!(arr_out, tmp, i)
+  end
+
+  # which is equivalent to
+  for i=1:4
+    tmp = getindex(arr_in, i)
+    setindex!(arr_out, tmp, i)
+  end
+
+  # it is important to understand that assigning to an element of an array
+  # is not truely an assignment such as `a = 1` or foo.a = 1`.
+  # The expression `arr_in[i] = tmp` should be parsed `arr_in( [i]= ) tmp`,
+  # where `[args...]=` is another name for the function setindex!.
+  # Index assignment just a function, and has behavior different than
+  # regular assignment.  In fact, it is possible to create new array types
+  # that have different behavior of setindex!, whereas it is not possible to
+  # change the behavior of the assignment operator, which is defined by the
+  # language itself.  The behavior of the assignment operator is closely
+  # related to the concepts of mutability and immutability described in the
+  # test_foo1 and test_bar1 functions.
+
+  return nothing
+end
+
+arr_in = rand(4)
+arr_out = zeros(4)
+indexing1(arr_in, arr_out)
+```
 
 
-### Specifying Static Parameters
-If a function accepts a type that has static type parameters, you (the programmer) have the option of fully specifying, partially specifying, not specifying, or omitting what values the static parameters must be.
-If a static parameter is not specified, then there is no restriction on its value.  For example the type:
+
+## Infix operations on arrays allocate new arrays
 
 ```
-type mytype{T1, T2}
+println("\n\nInfix operators allocate new arrays")
+
+function infix_arrays()
+
+  A = rand(3,3)  # create an array
+  B = A*2  # creates a new array and makes B refer to that new array
+  B = B*2  # creates another new array and make B refer to it.  The array
+           # B referred to on the previous line will be freed the next time
+           # the garbage collector runs.
+
+  return B
+end
+
+function infix_arrays2(A::AbstractArray)
+
+  B = A + 1  # add 1 to every element of A and store result in new array
+  C = 2*B
+  A = C  # this makes A refer to the array C.  It does not change the value
+         # of A, which is still a matrix of all zeros.
+         # if we wanted to update the matrix A refered to when the function
+         # began, we need to mutate it, for example
+         # for i=1:length(A)
+         #   A[i] = C[i]
+         # end
+
+  return nothing
+end
+
+A = zeros(3, 3)
+infix_arrays2(A)
+```
+
+What is the value of `A`?
+It is still all zeros.  The third line of the function did not modify
+the array created by `zeros(3, 3)`, it made the name `A` refer to a different
+array inside the function.  This does not affect what `A` refers to outside
+the function
+
+
+
+## Compound operations are not first class
+
+```julia
+println("\n\nCompound operations are not first class")
+
+function infix_compound1(A::AbstractArray)
+
+  A *= 2  # this is equivalent to A = A * 2.  *= is not a function in Julia,
+          # it is a syntax.  As a result, this does not modify the array
+          # A referred to when the function began, it creates a new array
+          # and makes A refer to it inside the function
+
+  return nothing
+end
+
+A = zeros(3, 3) + 1
+infix_compound1(A)
+# A is still all ones
+
+```
+
+# Closures (aka. lambda functions)
+
+
+It is possible to define a function inside another function.  This enables
+the inner function to access to the local variables of the outer function.
+This is particularly useful when working with functions that take other
+functions as arguments.  For example, one way to write Newton's method is
+to take a user function as an argument that computes the function value and
+Jacobian.  In this way, the algorithm of Newton's method is separated from
+the computation of the function value and Jacobian.
+
+As an example, this is a *bad* way to write Newton's method:
+(for this example we will allocate more memory than required, in order to
+ increase code clarity)
+
+```julia
+println("\n\nClosures (aka Lambda functions)")
+
+function newton_bad(x::AbstractVector)
+# on entry, x contains the initial guess for the solution
+# on exit, x contains the actual root
+
+  f_val = compute_f(x)  # compute function value
+  while ( norm(f_val) > 1e-13 )
+    jac = compute_jacobian(x)
+    delta_x = jac\f_val  # solve for update to x
+
+    for i=1:length(x)
+      x[i] -= delta_x[i]
+    end
+
+    # compute new function value
+    f_val = compute_f(x)
+  end
+
+  return nothing
+end
+```
+
+Here is the problem with this function: it can only solve one specific
+rootfinding problem, the one defined by `compute_f` and `compute_jacobian`
+What if we want to find the root of a different function?  We have to
+write a new Newton's method function.
+A better way to write this is
+
+```julia
+function newton_good(x::AbstractVector, compute_f::Function, compute_jacobian::Function)
+
+  f_val = compute_f(x)  # compute function value
+  while ( norm(f_val) > 1e-13 )
+    jac = compute_jacobian(x)
+    delta_x = jac\f_val  # solve for update to x
+
+    for i=1:length(x)
+      x[i] -= delta_x[i]
+    end
+
+    # compute new function value
+    f_val = compute_f(x)
+  end
+
+  println("root found at: ", x)
+  println("norm of function at root: ", norm(f_val))
+
+  return nothing
+end
+```
+
+This is better because now we can solve any rootfinding problem.  We must
+pass in the functions `compute_f` and `compute_jac` as arguments.  So we can call
+the same `newton_good` function to find the root of many different functions,
+depending on the arguments.  With this in mind, we can now describe
+lambda functions (also known as closures).  At first glance, one limitation
+of `newton_good` is that they take a single argument, the vector `x`.
+What if more information is needed to compute the function value of its
+Jacobian?  Lets call this other data `other_data`.  It cannot be passed
+into `compute_f` or `compute_jacobian` because `newton_good` calls them
+with only one argument, the vector `x`.  Instead we define a function
+`compute_f` and `compute_jacobian` inside another function:
+
+```julia
+mutable struct OtherData
+  a::Int
+  # any other fields required
+end
+
+function solve_newton(x::AbstractVector, other_data::OtherData)
+
+  function compute_f(_x::AbstractVector)
+    # this function takes only one argument, as required by newton_good
+
+    x1 = x[1]^2 - other_data.a  # because this function is defined inside
+                                # solve_newton, it has access to the local
+                                # variables of `solve_newton`, including
+                                # other_data
+    x2 = x[2]^2 - other_data.a
+
+    return [x1, x2]
+  end
+
+  function compute_jacobian(_x::AbstractVector)
+
+    jac = zeros(2,2)
+    jac[1, 1] = 2*x[1]
+    jac[1, 2] = 0
+    jac[2, 1] = 0
+    jac[2, 2] = 2*x[2]
+
+    return jac
+  end
+
+  # call newton_good, passing in the lambda functions
+  newton_good(x, compute_f, compute_jacobian)
+
+  return nothing
+end
+
+
+data = OtherData(2)
+x0 = [5.0, 5.0]
+solve_newton(x0, data)
+```
+
+In this example we have been careful to avoid reusing variable names when
+defining lambda functions.  This is not necessary in general, but you should
+read the section of the Julia manual on the scope of variables carefully.
+
+
+# Abstract types as forward declarations
+
+
+Julia requires types to be defined before they are used.  The statement seems
+a bit obvious, but has a few subtle implications.
+An obvious way to use types is to define a type and then define a function
+that uses the type
+
+```julia
+println("\n\nAbstract types as forward declarations")
+struct Foo2
+  a::Int
+  b::Int
+end
+
+function sum_foo2(foo::Foo2)
+
+  return foo.a + foo.b
+end
+
+obj = Foo2(1, 2)
+sum_foo2(obj)  # returns 3
+```
+
+Note that we have specified the argument to the function `sum_foo` must be
+of type `Foo2`.  A more subtle thing to do is:
+
+```julia
+function sum_foo3(foo)  # note: no type annotation for foo
+
+  return foo.a + foo.b
+end
+
+struct Foo3
+  a::Int
+  b::Int
+end
+
+obj = Foo3(1, 2)
+sum_foo3(obj)  # return 3
+```
+
+This is more interesting because at the time `sum_foo3` was defined, the
+type `Foo3` did not exist yet.  Never-the-less, the Julia compiler is
+able to compile `sum_foo3` for an argument of type Foo3.  Defining a function
+that might operate on a given type does not count as a "use" of that type.
+So the rule about defining before use does not apply.
+An important detail is that the function is compiled the first time it is
+run arguments of a particular type.  This is the reason all execution time
+measurements in this file have been run twice: the first time to compile the
+function, the second time to measure the execution time of the function.
+
+What happens if we want to specify a type annotation for the argument of
+`sum_foo3`.  Lets try this again with a new type, Foo4.  Consider the code:
+
+```
+function sum_foo4(foo::Foo4)  # this line is an error: Foo4 not defined
+
+  return foo.a + foo.b
+end
+
+struct Foo4
+  a::Int
+  b::Int
+end
+```
+
+Using the name of a type
+in a type annotation is a "use" of the type, so the type must be defined
+first.  On way to avoid this limitation is to specify an abstract type and
+use it in the type annotation.  The concrete type can then be specified after
+the function is defined.
+
+```
+abstract type AbstractFoo end
+
+function sum_abstractfoo(foo::AbstractFoo)
+
+  return foo.a + foo.b
+end
+
+struct Foo5 <: AbstractFoo  # make Foo5 a subtype of AbstractFoo
+  a::Int
+  b::Int
+end
+
+obj = Foo5(1, 2)
+sum_abstractfoo(obj)  # returns 3
+```
+
+Because `sum_abstractfoo` requires its argument to be a subtype of
+`AbstractFoo`, we can pass `Foo5` to it.  It is important to note that
+`AbstractFoo` does not require its subtypes to have fields name `a` and `b`,
+yet the function `sum_abstractfoo` will be an error if those fields do not
+exist.  There is currently no language feature that requires type to have
+certain fields or certain functions defined.  Therefore, it is very important
+to document all the fields and functions a type is expected to have if it
+is a subtype of an abstract type.
+Unlike C++, there is no performance penalty for the type annotations to
+function arguments.  In fact, the type annotations on function arguments
+have no impact on how the function runs, they only have an impact on how the
+compiler selects which method of a function to call (see Additional Details
+for Parametric Types).
+
+## Building Abstraction
+
+A benefit to abstract types is that they enable a programmer to write a
+single function that can operate on many types, provided all the (concrete)
+types support the operations required by the abstract type.
+As a simplified example, consider:
+
+```
+function mysum(a::Number, b::Number)  # note: abstract argument type annotations
+
+  return a + b + a*b
+end
+
+# Number is an abstract type, all different kinds of numbers (real, complex,
+# integer, etc.) are subtypes of it.  The function `mysum` works as long as
+# the types of `a` and `b` have defined methods for + and * that are able
+# to add and multiply the required types.
+
+mysum(1, 2)  # returns an Int with value 3 (requires
+             # (+)(::Int, ::Int)  and (*)(::Int, ::Int) be defined
+mysum(1, 2.0)  # return a Float64 with value 3.0 (requires
+               # (+)(::Int, ::Float64) and (*)(::Float64) be defined)
+mysum(Complex128(1.0, 2.0), 2)  # return Complex128(3.0, 2.0), requires
+                                # (+)(::Complex128, ::Int) and
+                                # (*)(::Complex128, ::Int) be defined)
+```
+
+This is a simple example, but it generalizes into a very powerful idea in
+programming.  If you know what operations an abstract type supports, it is
+possible to write a single function that operates on many different
+types, without knowing what the precise types are or what their internal data
+is.  This is called generic programming, and there are many books on
+the subject.  It is usually best to define a new type and then functions
+(such as +, * etc.) that operate on that type first, and then write all
+code in terms of those functions, rather than directly accessing the
+field of the type.  Of course, some abstract types requires their subtypes
+to have certain fields, in which case it is acceptable to access those
+field directly.
+
+
+
+## Additional details for parametric types
+
+When working with parametric types there are a few additional considerations
+that are not thoroughly mentioned in the manual.  Consider:
+
+```julia
+println("\n\nAdditional details for parametric types")
+struct Foo6{T1, T2}
   a::T1
-  b::T2
-end
-```
-
-and the function:
-
-```
-function addVals1(arg1::mytype{Float64, Int64})
-  return arg1.a + arg1.b
-end
-```
-
-Here the function can only take an object of type `mytype` with a first static parameter as `Float64` and a second static parameters as `Int64`.
-Here the static parameters are fully specified.
-Now look at the function:
-
-
-```
-function addVals2{Ta, Tb}(arg1::mytype{Ta, Tb})
-  return arg1.a + arg1.b
-end
-```
-
-Here the static parameters `Ta` and `Tb` (corresponding to `T1` and `T2`), are left unspecified.
-Note that they appear following the function name in curly braces and in the type annotation of `arg1`.  This is a syntactic requirement of Julia.
-No restrictions are placed on the values of the static parameters.  Note that `Ta` and `Tb` are now variables within the function, and 
-can be used, for example, when creating an array to specify the element type.
-
-For an example of partially specifying the static parameters, examine the function:
-
-```
-function addVals3{Tb}(arg1::mytype{Float64, Tb})
-  return arg1.a + arg1.b
-end
-```
-
-Here the first static parameter of `arg1` must be a `Float64` but the second static parameter is not restricted.
-
-The static parameters can be omitted entirely like this:
-
-```
-function addVals4(arg1::mytype)
-  return arg1.a + arg1.b
-end
-```
-
-This places no restrictions on the values of the static parameters.  It is equivalent to `addVals2`, except that
-`Ta` and `Tb` are not introduced as variables in the function.  Note that the compiler still knows that 
-`arg1` has 2 static parameters and specializes the code accordingly.  Omitting the static parameters is simply a syntactic shortcut
-for the programmer is `Ta` and `Tb` are not needed as variables inside the function.
-
-An interesting variation on omitting type parameters is this:
-
-```
-function addVals5{Ta}(arg1::mytype{Ta})
-  return arg1.a + arg1.b
-end
-```
-
-Here `Ta` is the value of the first static parameter of `arg1`, and the second parameter is not restricted.
-Note that all static parameters up to and including the one specified must be introduced as variables in the function (as in `addVals2`).
-For example, if a type has 5 static parameters and you only want to specify the 3rd, you must list the first 3, and omit the final 2.  There is (currently)
-no way to omit the first 2.
-
-## Invariant Type System
-One slight caveat to using abstract type annotations is that fact that Julia has an invariant type system.  One consequence is that Array{Int64, 1} is not a subtype of Array{Integer,1}, even though Int64 is a subtype of Integer.  To get around that in a function definition we can do the following:
-
-```
-function addArr{T <: Integer}(a::Array{T, 1}, b::Array{T,1})
-  return a + b
-end
-``` 
-
-This function definition says that it takes two arrays of with elements of the same type, and that type must be a subtype of integer.  This is slightly more restrictive that we might want, so we can also write: 
-
-```
-function addArr{T <: Integer, T2 <: Integer}(a::Array{T, 1}, b::Array{T2,1})
-  return a + b
-end
-``` 
-
-Which says that the function takes arrays of two different types, `T` and `T2`, both of which must be subtypes of Integer, but they do not have to be the same.
-
-Note that we could have written the earlier definition of `addNum` like this:
-
-```
-function addNums{T, T2}(a::T, b::T2)
-  return a + b
-end
-```
-
-The only difference is that now T, T2, the types of the arguments, are now variables inside the function.  In Julia, datatypes (and function names too) are just variables, of abstract types `DataType` and `Function`, respectively, and can be used just as if we had written the literal name.  For example, if we want to create a variable of type Float32:
-
-```
-a = Float32(2.5)
-T = Float32
-b = T(2.5)  # equal to a
-```
-
-## Types with Associated Methods
-One of the standard programming paradigms that works very well in Julia is creating types and methods that take the type as an argument.  The type stores data, and the functions use that data to perform actions.  Note that the functions are not part of the type (ie. this is different than a C++ class), but take the type as an argument (usually their first argument), and any other data needed to perform the operation.  A file that contains a type definition will usually also contain the basic functions needed to operate on that type.
-
-## Callable Types
-A more recently added feature is the ability to overload the call operator.  This allows callable types.  If you have a type names `type1`, you can define the `function call(a::type1, b, c)`.  The first argument to the `call` function must be the type, all others are regular arguments.  If you have an object of type `type1` named `obj1`, you can now call it as `obj1(b, c)`.  
-
-This solves a performance problem with passing functions as arguments to other functions.  For purposes of this discussion, functions are of abstract type Function, and do not have a concrete type. This means that a function that takes another function as an argument cannot specialize on what function is passed to it, a generic version is compiled that can take any function.  This means the function call is both dynamically dispatched, which is a little bit slow, and cannot be inlined.  If the function is called inside a loop, not inlining it is very bad for performance.  Callable functions (referred to as Functors in this context), can solve this problem.  For every function you want to pass, create a dummy type, and define the call function for that type, and pass a dummy object as an argument.  Because you created a new type, the receiving function is recompiled and therefore specialized based on the type, so it can inline the call to the function.
-
-An example:
-
-```
-type dummytype 
+  b::Array{T2, 1}
 end
 
-function call(a::dummytype, args...)
-  do calculation here 
-end 
+function func_foo6(obj::Foo6{T1, T2}) where {T1, T2}
 
-function myfunc(a, b)
-  a(args...)
+  t1 = zeros(T2, length(obj.b))  # must use T2 as the element type of the
+                                 # temporary array t1
+  for i=1:length(obj.b)
+    t1[i] = obj.b[i] + 1  # setindex will convert the result of the right hand
+                          # side expression to the element type of array t1
+  end
+
+  t2 = zeros(T2, length(obj.b))  # used T2 as element type
+  for i=1:length(obj.b)
+    t2[i] = obj.b[i] + obj.a  # this assumes that the sum of T1 and T2 can be
+                              # converted to T2.  This may not always be
+                              # possible, for example if obj.a is a complex
+                              # number with non-zero imaginary part, it cannot
+                              # be converted to a real number.
+  end
+
+  # A better way to do this is
+  T3 = promote_type(T1, T2)  # get a type large enough to represent both a
+                             # T1 and a T2
+  t3 = zeros(T3, length(obj.b))
+  for i=1:length(obj.b)
+    t3[i] = obj.b[i] + obj.a  # now this is guaranteed to work
+  end
+
+  # There is more type conversion machinery in Julia base, such as promote_op,
+  # which is beyond the scope of this tutorial.
+
+  return nothing
 end
 
-# here is the call sequence 
-obj = dummytype()  # construct dummy obj 
-myfunc(obj, 3.0)  # pass obj to myfunc, which call the call function
-```
+obj = Foo6(1, [1.0, 2.0])
+func_foo6(obj)
 
-`myfunc` gets recompiled for every different type passed to it, so it can inline the call to obj(args...), thus solving the performance problem.
+# this would not work because the sum is not convertable to T2
+#obj = Foo6( Complex128(1.0, 2.0), [1.0, 2.0])
+#func_foo6(obj)
+
+# Another point which is briefly mentioned in the Julia manual is duck typing.
+# When writing a parametric function, it is not necessary to name all the
+# type parameters of the argument types.  Any omitted type parameters are
+# unconstrained.  For example
+
+function foo6_duck1(obj::Foo6)  # this accepts a Foo6 object with any types as
+                                # T1 and T2
+
+  println("method 1 called")
+end
+
+function foo6_duck1(obj::Foo6{T1}) where {T1 <: Integer}
+  # this accepts any Foo6 object where T1 is some kind of integer.
+  # Any Foo6 that has T1 not an integer will go to the first method.
+
+  println("method 2 called")
+end
+
+function foo6_duck1(obj::Foo6{T1, T2}) where {T1 <: Integer, T2 <: AbstractFloat}
+  # this method accepts any Foo6 object that has T1 as some kind of integer
+  # and T2 as some kind of floating point number.  Any call to `foo6_duck1`
+  # where T1 is an integer but T2 is not will go to method 2, and any
+  # call that does not have T1 as an integer will go to method 1.
+  # Consult the Julia manual on how to avoid creating ambiguous methods.
+
+  println("method 3 called")
+
+end
+
+obj = Foo6(1.0, [1.0, 2.0])  # T1 is Float64, T2 is Float64
+foo6_duck1(obj)              # prints "method 1 called"
+
+obj = Foo6(1.0, zeros(Complex128, 3))  # T2 is Complex128 (not a subtype of
+                                       # AbstractFloat
+foo6_duck1(obj)                        # prints "method 1 called"
+
+obj = Foo6(1, zeros(Complex128, 3))  # T1 is Int, T2 is Complex128
+foo6_duck1(obj)                      # prints "method 2 called
+
+obj = Foo6(1, zeros(Float64, 3))  # T2 in Float64
+foo6_duck1(obj)  # print method 3 called
+```
