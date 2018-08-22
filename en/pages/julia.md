@@ -5,10 +5,8 @@ introductory material for new members of the lab.
 
 ## Documentation
 
-  The first step is to read the Julia documentation, which can be found
-  [here](https://docs.julialang.org/en/v0.6.4/).  As of the time of this writing,
-  the lab uses Julia 0.6 for all projects.  The following sections of the
-  Julia documentation are useful.
+  The first step is to read the Julia documentation, which can be found[here](https://docs.julialang.org/en/v0.6.4/).
+  As of the time of this writing, the lab uses Julia 0.6 for all projects.  The following sections of the Julia documentation are useful.
 
    * Introduction
    * Getting Started
