@@ -45,6 +45,7 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # PDESolver/Ticon
   * [Building PDESolver](pages/pdesolver/building.md)
+  * [future API notes](pages/notes_on_solver_interface.md)
 
 [Numerical Methods]()
 
