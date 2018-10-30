@@ -74,7 +74,7 @@ mind that this is not supported, is not tested, and may break at any time):
   * PumiInterface
   * PETSc2
 
-  * The module `ODL_common/pdesolver_deps` is available on the Debian 6 systems, but does not load all the same software as on RHEL7.  In particular it does not load PETsc.  The PETSc package should attempt to install PETSc if it is not present.  This will take additional time and disk space
+ * The module `ODL_common/pdesolver_deps` is available on the Debian 6 systems, but does not load all the same software as on RHEL7.  In particular it does not load PETsc.  The PETSc package should attempt to install PETSc if it is not present.  This will take additional time and disk space
 
 
 
