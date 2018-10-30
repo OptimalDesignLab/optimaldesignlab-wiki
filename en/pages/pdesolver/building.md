@@ -68,7 +68,7 @@ the RHEL7 or Debian 6 machines exclusively.  If you must switch back
 and forth for some reason, here are some hints on what to do (keeping in
 mind that this is not supported, is not tested, and may break at any time):
 
- * Any Julia package that has binary dependencies (ie. depends on a C/C++/Fortran shared library) will need to be rebuilt each time you switch from one system to another.  Currently this include:
+ * Any Julia package that has binary dependencies (ie. depends on a C/C++/Fortran shared library) will need to be rebuilt each time you switch from one system to another.  Currently this includes:
 
   * MPI
   * PumiInterface
