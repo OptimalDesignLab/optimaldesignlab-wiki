@@ -47,7 +47,7 @@ Then cd into `JULIA_PKGDIR` (or `~/.julia/v0.6/` if `JULIA_PKGDIR` is not set), 
 
 This will download and install PDESolver and all of its dependencies.
 Lines 2-4 are only required if you wish to build a different branch than
-`master.  Note that different branches might require different versions
+`master`.  Note that different branches might require different versions
 of dependencies, so you must checkout the branch before installing.
 The `Pkg.resolve()` step installs all dependencies that are registered
 package, and usually takes around 2 minutes.
