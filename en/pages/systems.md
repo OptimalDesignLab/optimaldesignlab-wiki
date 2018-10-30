@@ -78,7 +78,7 @@ larger jobs or many jobs simultaneously.
 Important links:
 
  * CCI [Queue](https://secure.cci.rpi.edu/): shows the current job queue for the various compute systems
- * CCI [Wiki](https://secure.cci.rpi.edu/wiki/index.php?title=CCI_Wiki)
+ * CCI [Wiki](https://secure.cci.rpi.edu/wiki/index.php?title=CCI_Wiki): details the compute systems and software available system-wide
 
 Software used by several members of the lab should be built in `~/barn-shared`.
 See the `READ_THIS_FIRST` file for details on the organizational structure.
