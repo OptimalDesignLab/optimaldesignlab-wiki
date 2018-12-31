@@ -31,14 +31,11 @@ Thus far we have created 1 dimensional entities (edges), but SimModeler requires
 ```
 
 5. Export Parasolid Model
-
 ```
     - File - Save As - Save as type - Parasolid *.x_t
 ```
 	
 6.  Use SimModeler to Create Mesh
-
-
 ```
     - Set up your environment to use SimModeler (see instructions below)
     - Open SimModeler
@@ -52,7 +49,6 @@ Thus far we have created 1 dimensional entities (edges), but SimModeler requires
 ```
 
 7.  Convert to Pumi format
-
 In a shell with environment set up to use SimModeler:
 ```
     - convert meshname.smd meshname.sms meshname.smb
