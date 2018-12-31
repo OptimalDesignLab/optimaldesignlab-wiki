@@ -30,23 +30,22 @@ Thus far we have created 1 dimensional entities (edges), but SimModeler requires
     - Click the green check mark to accept
 ```
 
-5. Strip Extranious Features from the model
+5. Export Parasolid Model
 
-If we import the model as it currently exists into SimModeler, it will see the airfoil curve and the surface containing the airfoil cutout as different parts, which will cause problems when we convert the mesh to the Pumi format.  It is recommended to save the model at this time.  To eliminate extranious features:
 ```
-    - File - Save As - Save as type - Parasolid Binary *.x_b
-    - Close the solidworks part currently open
-    - Open the Parasolid Binary file (decline any Feature Recognition or Import Diagnositcs)
-    - Left click on the ImportedCurve in the feature Manger Design Tree and click Suppress
     - File - Save As - Save as type - Parasolid *.x_t
 ```
 	
 6.  Use SimModeler to Create Mesh
+
+
 ```
     - Set up your environment to use SimModeler (see instructions below)
     - Open SimModeler
     - File - Import Geometry - select the Parasolid x_t file
-    - Use SimModeler to specify all parameters for the Surface Mesh
+    - In the left pane, notice that the model is an Assembly with 2 Parts.
+      To fix this: Modeling - Make NonManifold Model 
+    - In the new window that opens, specify all parameters for the Surface Mesh
     - Meshing - Generate Mesh - unselect Volume Meshing - Start
     - Click Show Mesh when completed
     - File - Save Mesh
@@ -54,7 +53,7 @@ If we import the model as it currently exists into SimModeler, it will see the a
 
 7.  Convert to Pumi format
 
-In a shell with envionrment set up to use SimModeler:
+In a shell with environment set up to use SimModeler:
 ```
     - convert meshname.smd meshname.sms meshname.smb
 ```
