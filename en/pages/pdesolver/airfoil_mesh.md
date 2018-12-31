@@ -20,8 +20,7 @@ This page contains instructions for creating a CAD file of an airfoil suitable f
     - Exit the sketch
 ```
 
-4. Create a Surface from the sketch
-  
+4. Create a Surface from the sketch  
 Thus far we have created 1 dimensional entities (edges), but SimModeler requires 2D model face to create a 2D mesh.  To turn the sketch into a surface
 ```
     - Insert - Surface - Planar
