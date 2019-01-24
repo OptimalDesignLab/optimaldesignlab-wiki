@@ -85,6 +85,7 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # SCOREC
   * [SCOREC and CCI Systems](pages/systems.md)
+  * [SSH tips](pages/ssh_tips.md)
   - - - -
   * # Miscellaneous Lab Advice
   * [Suggested courses to take](pages/suggested_courses.md)
