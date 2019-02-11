@@ -1,7 +1,17 @@
 # Getting PDESolver working on DRP
 
 Before you start, make sure your module environment is set up properly.
-Navigate [here](pages/systems.md#CCI) and follow the instructions.
+Navigate [here](../systems.md#CCI) and follow the instructions.
+
+
+## Recommended method
+
+Navigate [here](http://www.optimaldesignlab.com/PDESolver.jl/deps_readme.html#Offline-Installation-1) and follow the instructions.
+This is Jared's recommended way of getting PDESolver running on DRP, and one would be wise to follow his instructions.
+
+## Alternate method
+
+This method is only if you know what you're doing. It could be helpful if you're flipping between versions of packages or git branches in repositories.
 
 First, get PDESolver working on SCOREC systems. Run tests to make sure.
 You'll need these packages to be working: 
