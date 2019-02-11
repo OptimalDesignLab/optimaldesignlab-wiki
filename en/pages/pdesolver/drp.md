@@ -1,5 +1,8 @@
 # Getting PDESolver working on DRP
 
+Before you start, make sure your module environment is set up properly.
+Navigate [here](pages/systems.md#CCI) and follow the instructions.
+
 First, get PDESolver working on SCOREC systems. Run tests to make sure.
 You'll need these packages to be working: 
 * `MPI`
