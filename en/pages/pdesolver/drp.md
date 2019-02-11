@@ -149,6 +149,7 @@ srun -t 06:00:00 -N $nodes -n $tasks hostname > hosts.$SLURM_JOB_ID
 
 ./job.sh  $tasks
 ```
+You'll probably have to make these executable with `chmod u+x job.sh slurm_job.sh`.
 
 Now, with a suitably partitioned mesh, run it with:
 ```
