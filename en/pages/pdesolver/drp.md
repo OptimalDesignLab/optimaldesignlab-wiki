@@ -103,7 +103,7 @@ You should be ok to run a PDESolver case.
 
 # Example of how to run a PDESolver case on DRP
 
-You'll a suitable input file for PDESolver, and two shell scripts for running tasks on SLURM on DRP.
+You'll need a suitable input file for PDESolver, and two shell scripts for running tasks on SLURM on DRP.
 
 I'll call the two shell scripts `job.sh` and `slurm_job.sh`.
 Here's the contents of `job.sh`:
