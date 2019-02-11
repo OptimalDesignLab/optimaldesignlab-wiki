@@ -45,6 +45,7 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # PDESolver/Ticon
   * [Building PDESolver](pages/pdesolver/building.md)
+  * [Getting PDESolver working on DRP](pages/pdesolver/drp.md)
   * [future API notes](pages/notes_on_solver_interface.md)
   * [Making Meshes](pages/pdesolver/airfoil_mesh.md)
 
