@@ -31,6 +31,7 @@ scp ODLCommonTools.tar ODLCasan@lp01.ccni.rpi.edu:/gpfs/u/barn/ODLC/ODLCasan/drp
 
 ssh over to DRP, and unpack all of the tarballs in your `$JULIA_PKGDIR`. For example,
 ``` 
+cd ~/barn/drp/v0.6
 tar xvf ODLCommonTools.tar
 ```
 It's ok to delete these tarballs now, both on SCOREC and DRP, if you'd like.
