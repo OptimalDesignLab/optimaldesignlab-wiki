@@ -13,6 +13,8 @@ This is Jared's recommended way of getting PDESolver running on DRP, and one wou
 
 This method is only if you know what you're doing. It could be helpful if you're flipping between versions of packages or git branches in repositories.
 
+NOTE: all of the following commands and shell scripts are written for my account. You *will* have to make changes - at minimum, you'll have to change the username from `ODLCasan` to whatever your CCI username is.
+
 First, get PDESolver working on SCOREC systems. Run tests to make sure.
 You'll need these packages to be working: 
 * `MPI`
