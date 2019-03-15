@@ -48,6 +48,9 @@ A more complex navigation example: ----------------------------------------
   * [Getting PDESolver working on DRP](pages/pdesolver/drp.md)
   * [future API notes](pages/notes_on_solver_interface.md)
   * [Making Meshes](pages/pdesolver/airfoil_mesh.md)
+  - - - -
+  * # MFEM
+  * [MFEM Overview](pages/mfem/overview.md)
 
 [Numerical Methods]()
 
