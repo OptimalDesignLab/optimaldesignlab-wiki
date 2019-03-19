@@ -51,7 +51,6 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # MFEM
   * [MFEM Overview](pages/mfem/overview.md)
-  * [MFEM on SCOREC](pages/mfem/MFEM_on_SCOREC.md)
 
 [Numerical Methods]()
 
