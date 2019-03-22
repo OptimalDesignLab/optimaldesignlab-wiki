@@ -1,0 +1,11 @@
+cmake ../mfem \
+-DCMAKE_BUILD_TYPE=Debug \
+-DMFEM_USE_MPI=YES \
+-DMFEM_USE_METIS_5=YES \
+-DMFEM_DEBUG=YES \
+-DMFEM_USE_PUMI=YES \
+-DMFEM_ENABLE_EXAMPLES=YES \
+-DMFEM_ENABLE_MINIAPPS=YES \
+-DPUMI_DIR=/lore/yang/mfem_develop/core_build/install \
+-DHYPRE_DIR=/lore/yang/build/hypre-2.11.2/install/ \
+-DCMAKE_INSTALL_PREFIX=/lore/yang/mfem_develop/mfem_build/install
