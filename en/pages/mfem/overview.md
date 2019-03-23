@@ -5,7 +5,8 @@ The MFEM overview can be found [here](MFEM_Overview.pdf#CCI).
 ## Build MFEM on SCOREC
 
 This is a brief tutorial on building MFEM with PUMI on SCOREC system. The entire building is about 2GB, so it is recommended to build in `lore` directory.
-1. Get source code and set up build environment: Go to your home dirctory in `lore` and create a new directory `mfem_develop`, then download `MFEM`, `PUMI` source and `pumi-meshes` as follows:
+### Get source code and set up build environment
+Go to your home dirctory in `lore` and create a new directory `mfem_develop`, then download `MFEM`, `PUMI` source and `pumi-meshes` as follows:
 ```bash
 cd /lore/yang
 mkdir mfem_develop
@@ -38,15 +39,17 @@ make install
 ctest
 (some output)
 ```
-
-3. Build `MFEM`: Make a directory `mfem_build` under `mfem_develop`. Then download the configuration file [MFEMJessiConfig.sh](MFEMJessiConfig.sh#CCI) under `mfem_develop` directory. In `MFEMJessiConfig.sh`, 1) change the `DPUMI_DIR` to where you build `PUMI` (in my case it is `/lore/(your id)/mfem_develop/core_build/install`), 2) change `DHYPER_DIR` to `/lore/yang/build/hypre-2.11.2/src/hypre`, 3) change `DCMAKE_INSTALL_PREFIX` to directory `mfem_build`. Note: `DHYPRE_DIR` is pointing to my own directory, you can also build it and change the path accordingly. Then configure and build `MFEM` as follows:
+### Build `MFEM`
+Make a directory `mfem_build` under `mfem_develop`. Then download the configuration file [MFEMJessiConfig.sh](MFEMJessiConfig.sh#CCI) under `mfem_develop` directory. In `MFEMJessiConfig.sh`, 1) change the `DPUMI_DIR` to where you build `PUMI` (in my case it is `/lore/(your id)/mfem_develop/core_build/install`), 2) change `DHYPER_DIR` to `/lore/yang/build/hypre-2.11.2/src/hypre`, 3) change `DCMAKE_INSTALL_PREFIX` to directory `mfem_build`. Note: `DHYPRE_DIR` is pointing to my own directory, you can also build it and change the path accordingly. Then configure and build `MFEM` as follows:
 ```bash
 cd mfem_build
 source ../MFEMJessiConfig.sh
 make -j 16
 make install
 ```
-4. Build  visualization software `GLVIS`: download GLVis from [here](https://bit.ly/glvis-3-4). Build  and run `GLVIS` as follows:
+
+### 4. Build  visualization software `GLVIS`
+download GLVis from [here](https://bit.ly/glvis-3-4). Build  and run `GLVIS` as follows:
 ```bash
 tar -zxvf glvis-3.4.tgz
 cd glvis-3.4
@@ -54,8 +57,8 @@ make MFEM_DIR=../mfem_build -j
 (some output)
 ./glvis
 ```
-
-5. Run sample cases with pumi meshes: I make the pumi mesh samples available in `/lore/yang/mfem_develop/mfem_build/data/pumi`, and please copy it to you own data directory. Then you can run the pumi meshes examples as follows:
+### Run sample cases with pumi meshes
+I make the pumi mesh samples available in `/lore/yang/mfem_develop/mfem_build/data/pumi`, and please copy it to you own data directory. Then you can run the pumi meshes examples as follows:
 ```bash
 cd /lore/(your id)/mfem_develop/mfem_build/examples/pumi
 (serial)
@@ -64,5 +67,4 @@ cd /lore/(your id)/mfem_develop/mfem_build/examples/pumi
 mpirun -np 8 ./pumi_ex1p -m ../../data/pumi/parallel/Kova/Kova100k_8.smb -p ../../data/pumi/geom/Kova.smb
 ```
 If you have another terminal open and running GLVIS, the visualization will show up automatically.
-
-6. Further work will focus on how to generate geometry and mesh and how to visualize result with paraview.
+Further work will focus on how to generate geometry and mesh and how to visualize result with paraview.
