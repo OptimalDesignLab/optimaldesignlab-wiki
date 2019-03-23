@@ -20,8 +20,7 @@ Before building `PUMI` and `MFEM`, we need to load several modules:
 module load cmake \
 mpich/3.2.1-niuhmad \
 metis/5.1.0-int32-3tycybv \
-simmetrix-simmodsuite/11.0-180619-a4mef7a \
-metis/5.1.0-int32-3tycybv
+simmetrix-simmodsuite/11.0-180619-a4mef7a
 ```
 ### 2. Build PUMI
 First download the configuration file [core-config.sh](core-config.sh#CCI) and put it in `mfem_develop` directory. In `core-config.sh`, change the `DMESHES` to the directory of `pumi-mesh` (In my case it is `/lore/yang/mfem_develop`). Note: The `CMAKE_PREFIX_PATH` (line 2) is pointing to my directory `/lore/yang/build/core-deps`, in which there are the core dependencies required by `PUMI` (ParMetis and Zoltain). You can also copy this dirctory to your own directory and change `CMAKE_PREFIX_PATH` accordingly. Then make a directory `core_build` under `mfem_develop` and source the `core-config.sh` as follows:
@@ -57,7 +56,7 @@ make MFEM_DIR=../mfem_build -j
 (some output)
 ./glvis
 ```
-### 5. Run sample cases with pumi meshes
+### 5. Run PUMI mesh samples
 I make the pumi mesh samples available in `/lore/yang/mfem_develop/mfem_build/data/pumi`, and please copy it to you own data directory. Then you can run the pumi meshes examples as follows:
 ```bash
 cd /lore/(your id)/mfem_develop/mfem_build/examples/pumi
