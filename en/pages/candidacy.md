@@ -4,13 +4,13 @@ I (Prof. Hicken) realized that the expectations and process surrounding the cand
 
 ## What is the candidacy?
 
-Basically, the candidacy is an opportunity to summarize what you have done and what you will do to complete your thesis.  And, importantly, you provide this information to a group of people other than me.  This group of people --- the committee --- will decide if the content of the research is adequate for a doctoral degree.  Thus, the candidacy provides a last chance to modify the research direction, so that the thesis defense has no surprises in it.  Imagine going straight to the defense without such input?  It would increase the chances of failing the defense, which nobody wants.
+Basically, the candidacy is an opportunity to summarize what you have done and what you will do to complete your thesis.  And, importantly, you provide this information to a group of people other than just me.  This group of people --- the committee --- will decide if the content of the research is adequate for a doctoral degree.  Thus, the candidacy provides a last chance to modify the research direction, so that the thesis defense has no surprises in it.  Imagine going straight to the defense without such input?  It would increase the chances of failing the defense, which nobody wants.
 
 ## When does the candidacy happen?
 
 First, according to the OGE, the candidacy **must take place a year before the thesis defense**.  Please keep this constraint in mind.  Furthermore, the MANE Department suggests the candidacy take place within 2 years of passing the DQE; this is consistent with a 4 year degree (if starting from bachelors degree).
 
-As for when you take the candidacy from the beginning of your degree, this is harder to judge --- it is dependent on the individual and the project.  But the bottom line is that I do not want to put someone in the position where the committee is challenging the work done as being adequate.  Here are some guidelines that usually ensure that can be avoided.
+In my opinion, when you take the candidacy from the beginning of your degree is harder to judge --- it is dependent on the individual and the project.  But the bottom line is that I do not want to put someone in the position where the committee is challenging the work done as being adequate.  Here are some guidelines that usually ensure a smooth candidacy.
 
   * One or more journal papers have been submitted/accepted.
   * Three or more conference papers have been accepted and presented.
@@ -22,9 +22,9 @@ As for when you take the candidacy from the beginning of your degree, this is ha
 Before the candidacy, we will have already identified a committee.  Then, roughly speaking, the following steps should take place **in order.**
 
 1. You will prepare a draft of the candidacy report.  More on this below.
-2. I will iterate with you on the draft.  **I need time to do this!!!**  Please budget 2 weeks at least for me. Strictly speaking, you could send the document to the committee without my input; however, if you do this (don't) I will be reluctant to defend anything you said in the document that I disagree with.
+2. I will iterate with you on the draft.  **I need time to do this!!!**  Please budget 2 weeks at least for me. Strictly speaking, you could send the document to the committee without my input; however, if you do this (please don't!) I will be reluctant to defend anything you said in the document that I disagree with.
 3. Once we are happy with the draft, you can send it to the committee.
-4. At the same time you send it to the committee, you can ask them which weeks would work best for the candidacy presentation.  I recommend providing at least 3 choices, and they should be at least 2 weeks away from when you sent the report.
+4. At the same time you send the report to the committee, you can ask them which weeks would work best for the candidacy presentation.  I recommend providing at least 3 choices, and they should be at least 2 weeks away from when you sent the report.
 5. Once a week has been identified, immediately send a poll (e.g. Doodle) to find a 2 hour slot.  Try to stay between 9am and 5pm, and avoid lunch please; we need to eat too.
 6. Again, as soon as a time has been identified, immediately send an email letting the committee know the date and time that works.  If you have room reserved already, let them know where it will be held; if you do not have a room, let them know you will send a follow up email with the location.
 7. If you do not have a room, reserve it now!  Then send an email to the committee with the room location.
