@@ -79,7 +79,7 @@ A more complex navigation example: ----------------------------------------
   * [Latex resources](pages/latex/latex.md)
   * [Beamer for presentation](pages/latex/beamer.md)
 
-[RPI, MANE, & SCOREC]()
+[Administrative Things]()
 
   * # RPI
   * [Office of Graduate Education](pages/oge.md)
@@ -92,6 +92,7 @@ A more complex navigation example: ----------------------------------------
   * [SSH tips](pages/ssh_tips.md)
   - - - -
   * # Miscellaneous Lab Advice
+  * [Candidacy](pages/candidacy.md)
   * [Suggested courses to take](pages/suggested_courses.md)
 
 

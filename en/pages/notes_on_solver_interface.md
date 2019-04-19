@@ -31,6 +31,7 @@ mesh = generatePumiMesh(meshfile="naca_mesh.smb",
 euler = createPhysics(opts["physics"], opts)
 
 # when the solver is created, the Jacobian, if needed is created (etc.)
+# This needs to size euler.work
 solver = createPDESolver(mesh, euler, opts)  # mesh, euler, opts stored in fields of solver
 
 # solving for the flow
@@ -50,6 +51,8 @@ calcdJdu!(functional, solver, q, dJdu)
 solveAdjoint!(solver, dJdu, psi)
 
 ```
+
+## Evaluating the residual
 
 Issues for `calcStateResidual`:
 
@@ -81,23 +84,18 @@ function calcStateResidual!(solver::Solver,
   fill!(res, 0.0)
   dudx = solver.dudx
 
-  # flux is an array large enough to hold data for all the nodes on largest
-  # element
-  flux = solver.element_work
+  # work is a 3D array.  The first index is for variables; the second index must
+  # be large enough to hold the data for the element type with the most nodes;
+  # the third index is for the number of work arrays.
+  work = solver.element_work
 
   # loop over elements and evaluate the volume integrals
   for nodes, fem in getElement(solver) # <-- returns an iterator
-    # compute derivatives for viscous terms
-    for di = 1:mesh.ndim
-        calcDerivatives!(solver.physics, fem,
-                         sview(q_elem,:,nodes),
-                         sview(dudx,:,di,nodes))
-    end
-    calcVolumeFlux!(solver.physics, sview(q_elem,:,nodes),
-                    sviw(dudx,:,:,nodes),
-                    sview(flux,:,1:length(nodes)))
-    weakDifferentiateElement!(fem, sview(flux,:,1:length(nodes)),
-                              sview(reselem,:,nodes))
+    dxidx_elem = sview(solver.mesh.dxidx, :, nodes)
+    q_elem = sview(q, :, nodes)
+    res_elem = sview(res, :, nodes)
+    calcElementWeakForm!(solver.physics, solver.fem, dxidx_elem, q_elem,
+                         work, res_elem)
   end
 
   # internal face integrals
@@ -105,6 +103,95 @@ function calcStateResidual!(solver::Solver,
 end
 ```
 
+
+```
+function calcElementWeakForm!()
+  # loop over flux types?
+
+  # calcFirstOrderTerms!(physics.iflux, physics, fem, dxidx, uquad, work, res)
+  
+  prepData(physics, fem, work)
+  for flux in physics.fluxes
+    calcFlux(physics, flux, dxidix, uqaud, work, res)
+  end
+end
+```
+
+
+The function below performs the element-level weak-form calculation when the physics are hyperbolic PDE; this is dispatched based on `!Is2ndOrderPDE`.
+```
+function calcElementWeakForm!(solver::Solver, fem::AbstFE,
+                              dxidx::AbstractArray{Tmsh,3},
+                              u::AbstractArray{Tsol,2},
+                              work::AbstractArray{Tres,3},
+                              res::AbstractArray{Tres,2}
+                              ) where {AbstFE,Tmsh,Tsol,Tres,Is1stOrdPDE{Tphys}}
+  # flux = sview(work, :, :, 1)
+  uquad = interpToQuadPts(fem, u, sview(work, :, :, 2:2+physics.nvar))
+  calcFirstOrderTerms!(physics, fem, dxidx, uquad, work, res)
+end
+```
+
+```
+function calcElementWeakForm!(solver::Solver, fem::AbstFE,
+                              dxidx::AbstractArray{Tmsh,3},
+                              u::AbstractArray{Tsol,2},
+                              work::AbstractArray{Tres,3},
+                              res::AbstractArray{Tres,2}
+                              ) where {AbstFE,Tmsh,Tsol,Tres,Is2ndOrdPDE{Tphys}}
+  # flux = sview(work, :, :, 1)
+  uquad = interpToQuadPts(fem, u, sview(work, :, :, 2:2+physics.nvar))
+  for di = 1:physics.ndim
+    differentiateElement!(fem, di, u, sview(dudx,:,:,di))
+  end
+  calcSecondOrderTerms!(physics, fem, dxidx, uquad, work, res)
+end
+```
+
+
+The function below performs the element-level weak-form calculation when the physics involve a 2nd-order PDE; this is dispatched based on `Is2ndOrderPDE`.
+```
+function calcElementWeakForm!(physics::Tphys, fem::AbstFE,
+                              dxidx::AbstractArray{Tmsh,3},
+                              u::AbstractArray{Tsol,2},
+                              work::AbstractArray{Tres,3},
+                              res::AbstractArray{Tres,2}
+                              ) where {AbstFE,Tmsh,Tsol,Tres,Is2ndOrdPDE{Tphys}}
+  dudx = sview(work, :, :, 1:3) # need a better way to handle work index  
+  flux = sview(work, :, :, 4)
+  uquad = interpToQuadPts(fem, u, sview(work, :, :, 5:5+physics.nvar))
+  for di = 1:physics.ndim
+    differentiateElement!(fem, di, u, sview(dudx,:,:,di))
+  end
+  for di = 1:physics.ndim
+    fill!(flux, 0.0)
+    addInviscidFluxes!(fem, di, dxidx, u, flux)
+    addViscousFluxes!(fem, di, dxidx, u, dudx, flux)
+    weakDifferentiateElement!(fem, di, flux, res, Subtract(), transpose=true)
+  end
+end
+```
+
+The function below is for two-point flux calculations.  The trait `IsTwoPoint` is used to determine dispatch.
+```
+# !!!!!!!!!!!!!!!!!!  Under Construction
+function calcAndDifferentiateFluxes!(physics::Tphys, fem::AbstFE,
+                                     u::AbstractArray{Tsol,2},
+                                     dudx::AbstractArray{Tres,3},
+                                     work::AbstractArray{Tres,3},
+                                     res::AbstractArray{Tres,2}
+                                     ) where {AbstFE,Tsol,Tres,!IsTwoPoint{Tphys}}
+  flux = sview(work,:,:,1)
+  for di = 1:physics.ndim
+    calcVolumeFlux!(physics, di, q, dudx, flux)
+    weakDifferentiateElement!(fem, di, flux, res, Subtract(), transpose=true)
+  end
+end                              
+```
+
+
+
+### Helper functions for evaluating the residual
 
 The `copyStateVectorTo2DArray!` function moves data from 1D array storage in a `StateVector` to 2D array storage in `u`.  The code uses ideas from sparse matrix storage.
 ```
@@ -128,6 +215,20 @@ function get2DArrayNodeRange(mesh::AbstractMesh, elem::Int)
 end
 ```
 
+Returns either `u` if collocation or `elem_work` if not.
+```
+function interpToQuadPts(fem::AbstFE, u::AbstractArray{Tsol,2},
+                         elem_work::AbstractArray{Twrk,2}) where {Tsol,Twrk,IsCollocation{AbstFE}}
+    return u
+end
+
+function interpToQuadPts(fem::AbstFE, u::AbstractArray{Tsol,2},
+                         elem_work::AbstractArray{Twrk,2}) where {Tsol,Twrk,!IsCollocation{AbstFE}}
+    interpToQuadPts(fem, u, elem_work) # change name
+    return elem_work
+end
+
+```
 
 ## Major components
 
