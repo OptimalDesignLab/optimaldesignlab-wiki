@@ -29,11 +29,21 @@ The general installation instructions are [here](http://www.optimaldesignlab.com
 Before installing, run the shell commands
 
 ```
-module load cmake
-module load ODL_common/pdesolver_deps
+module load build_tools
+module load ODL_common/pdesolver_deps2
 ```
 
-The second command loads the proper compilers, MPI, PUMI, and PETSc, and Julia.
+The first command loads the proper compilers, MPI, and CMake.
+The second command loads PUMI, and PETSc, and Julia.
+
+Julia packages are installed in the location specified by the environment
+variable `JULIA_PKGDIR`, or `~/.julia/v0.6` if the environment variable
+does not exist.  If this directory does not exist, run
+
+```
+  julia -e 'Pkg.init()'
+```
+
 Then cd into `JULIA_PKGDIR` (or `~/.julia/v0.6/` if `JULIA_PKGDIR` is not set), and run the shell commands:
 
 ```
