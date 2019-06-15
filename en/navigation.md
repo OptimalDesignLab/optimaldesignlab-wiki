@@ -54,6 +54,7 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # C++
   * [C++ style guide](pages/cpp_style.md)
+  * [C++ documentation guide](pages/cpp_doc.md)
 
 [Numerical Methods]()
 
