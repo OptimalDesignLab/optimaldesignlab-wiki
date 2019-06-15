@@ -12,9 +12,9 @@ All names should be descriptive and "readable".
 
 * **Variables** are all lowercase, with words separated by an underscore: `cfd_mesh`
 * **Function Parameters** follow the same convention as variables.
-* **Functions** are lower [camel case]((http://en.wikipedia.org/wiki/CamelCase)): `setInitialCondition()`, `jacobiPoly()`
+* **Functions** are lower [camel case](http://en.wikipedia.org/wiki/CamelCase): `setInitialCondition()`, `jacobiPoly()`
 * **Member Functions** follow the same convention as functions.
-* **Classes** are upper [camel case]((http://en.wikipedia.org/wiki/CamelCase)): `AdvectionIntegrator`, `AbstractSolver`.
+* **Classes** are upper [camel case](http://en.wikipedia.org/wiki/CamelCase): `AdvectionIntegrator`, `AbstractSolver`.
 <!-- * **Instances** of classes follow the same convention as variables. -->
 
 ## Indentation
@@ -62,11 +62,11 @@ When comparing a variable with a constant, put the constant on the left of the "
 ```c++
 if (1 == x)
 {
-    // do stuff
+   // do stuff
 }
 else
 {
-    // do other stuff
+   // do other stuff
 }
 ```
 
