@@ -6,6 +6,8 @@
 
 * Put function calls on one line if it fits; otherwise, wrap arguments at the parenthesis.
 
+* Take a look at the [C++ Core Guidlines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#S-interfaces) for a much more exhaustive set of guidelines and formatting considerations for using modern C++ well.
+
 ## Naming conventions
 
 All names should be descriptive and "readable".
@@ -21,19 +23,7 @@ All names should be descriptive and "readable".
 
 Spaces should be used for indentation. Use three (3) spaces for indentation.
 
-Indent every time there is a new scope created, except for the following exceptions: content inside of a namespace, preprocesser directives, and the private, protected, and public class labels. Ex:
-
-<!-- ```c++
-namespace mach
-{
-
-AbstractSolver::AbstractSolver(const string &opt_file_name)
-{
-   . . .
-}
-
-} // namespace mach
-``` -->
+Indent every time there is a new scope created, except for the following exceptions: content inside of a namespace, preprocesser directives, and the private, protected, and public class access specifiers. Ex:
 
 ```c++
 void u0_function(const Vector &x, Vector& u0)
@@ -57,7 +47,7 @@ void u0_function(const Vector &x, Vector& u0)
 
 Put a space between the "if", "while", or "switch" keyword and the condition. Avoid putting spaces between the parentheses and the condition.
 
-When comparing a variable with a constant, put the constant on the left of the "==". This will generate a compiler error if you forget an equals sign, making debugging of this problem fairly trivial. Ex:
+When comparing a variable with a constant, put the constant on the left of the `==`. This will generate a compiler error if you forget an equals sign, making debugging of this problem trivial. Ex:
 
 ```c++
 if (1 == x)
@@ -96,12 +86,24 @@ Use spaces after keywords, but not functions and not keywords that act like func
 
 This:
 
-```c++
-solver.setInitialCondition(u0_function);
-```
+`solver.setInitialCondition(u0_function);`
 
 **Not** this:
 
+`solver.setInitialCondition( u0_function );`
+
+## Class definitions
+
+Class access specifiers should be in `public` before `protected` before `private` order. Ex:
+
 ```c++
-solver.setInitialCondition( u0_function );
+class X
+{
+public:
+   // public interface
+protected:
+   // functions for use by derived class implementations
+private:
+   // implementation details (types, functions, and data)
+};
 ```
