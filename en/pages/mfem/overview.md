@@ -68,7 +68,7 @@ cd /lore/(your id)/mfem_develop/mfem_build/examples/pumi
 (serial)
 ./pumi_ex1 -m ../../data/pumi/serial/Kova.smb -p ../../data/pumi/geom/Kova.smb
 (parallel)
-mpirun -np 8 ./pumi_ex1p -m ../../data/pumi/parallel/Kova/Kova100k_8.smb -p ../../data/pumi/geom/Kova.smb
+mpirun -np 8 ./pumi_ex1p -m ../../data/pumi/parallel/Kova/Kova100k_8.smb -p ../../data/pumi/geom/Kova.dmg
 ```
 If you have another terminal open and running GLVIS, the visualization will show up automatically.
 Further work will focus on how to generate geometry and mesh and how to visualize result with paraview.
