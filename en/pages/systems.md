@@ -1,6 +1,6 @@
 # Scorec
 
-Scorect has a number of workstations as well as a small cluster. The workstations are for developing software (ie. writing new code,
+Scorec has a number of workstations as well as a small cluster. The workstations are for developing software (ie. writing new code,
 running short tests).
 The cluster is for running longer simulations.
 If more compute resourcers are required, see the `CCI` section.
@@ -42,7 +42,7 @@ If you need write permissions, email the Scorec systems administration.
 Only software used by several members of the lab should be installed here.
  Software used by only one person should be built in your home directory.
 
-After adding the above code to your `~/.bash_profile`, and logging out and logging in again, examine the output of 
+After adding the above code to your `~/.bash_profile`, and logging out and logging in again, examine the output of
 
 ```
   module avail
@@ -90,5 +90,3 @@ if [[ $hname == "q"* ]]; then
   export JULIA_PKGDIR=$HOME/barn/drp
 fi
 ```
-
-
