@@ -56,7 +56,7 @@ If you want to use geometry information in Pumi:
 ```
     - mdlConvert meshname.smd meshname.dmg
 ```
-NOTE: If `convert` and `mdlConvert` are not in your PATH variable (or your PATH variable has a different `convert`), the current full paths for each utility are as follows:
+If `convert` and `mdlConvert` are not in your PATH variable (or your PATH variable has a different `convert`), the current full paths for each utility are as follows:
 ```
     /opt/scorec/spack/install/linux-rhel7-x86_64/gcc-7.3.0/pumi-develop-4h5fi2kxlxzdyytfgfoiyjmobohk2exy/bin/convert
     /opt/scorec/spack/install/linux-rhel7-x86_64/gcc-7.3.0/pumi-develop-4h5fi2kxlxzdyytfgfoiyjmobohk2exy/bin/mdlConvert
