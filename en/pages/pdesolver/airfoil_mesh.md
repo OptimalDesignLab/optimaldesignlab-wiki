@@ -56,6 +56,13 @@ If you want to use geometry information in Pumi:
 ```
     - mdlConvert meshname.smd meshname.dmg
 ```
+NOTE: If `convert` and `mdlConvert` are not in your PATH variable (or your PATH variable has a different `convert`), the current full paths for each utility are as follows:
+```
+    /opt/scorec/spack/install/linux-rhel7-x86_64/gcc-7.3.0/pumi-develop-4h5fi2kxlxzdyytfgfoiyjmobohk2exy/bin/convert
+    /opt/scorec/spack/install/linux-rhel7-x86_64/gcc-7.3.0/pumi-develop-4h5fi2kxlxzdyytfgfoiyjmobohk2exy/bin/mdlConvert
+```
+Be aware that the version of PUMI will depend on the module you loaded, so check which version you are using.
+
 If you want to partition the mesh for parallel computation
 ```
     - split meshname.dmg meshname.smb meshname_parallel.smb num_partitions
