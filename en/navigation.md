@@ -51,6 +51,7 @@ A more complex navigation example: ----------------------------------------
   - - - -
   * # MFEM
   * [MFEM Overview](pages/mfem/overview.md)
+  * [MFEM on SCOREC](pages/mfem/mfem-scorec.md)
   - - - -
   * # C++
   * [C++ style guide](pages/cpp_style.md)
