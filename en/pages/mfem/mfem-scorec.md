@@ -6,7 +6,7 @@ This provides a guide to build/use MFEM on SCOREC systems. The `MFEM` is built w
 MFEM_USE_MPI=YES \
 MFEM_USE_PETSC=YES \
 MFEM_USE_LAPACK=YES \
-MFEM_USE_PUMI=YES (if using `PUMI`)
+MFEM_USE_PUMI=YES (if using PUMI)
 ```
 
 ## Already built MFEM
@@ -28,7 +28,7 @@ mpich/3.2.1-niuhmad \
 hypre/2.15.1-int32-uhae7i4 \
 petsc/3.11.0-int32-hdf5+ftn-real-c-264efxj \
 openblas/0.3.5-7miavkp \
-pumi/develop-int32-us33lls (if using `PUMI`)
+pumi/develop-int32-us33lls (if using PUMI)
 ```
 
 I suggest to add above to your `.bash_rc/.bash_profile` file so that they need not to be loaded manually everytime.
@@ -41,18 +41,11 @@ In case of building `MFEM` on your `SCOREC` directory:
 
 * ```git clone https://github.com/mfem/mfem.git```
 * make an empty directory, say `mfem_build`
-
-* 
-s
-```
-if using PUMI with MFEM
-download the configuration file [config_mfem.sh](config_mfem.sh)
-else
-download [config_mfem_pumi.sh](config_mfem_pumi.sh)
-
-```
-
+* `if using PUMI with MFEM`
+download the configuration file [config_mfem.sh](config_mfem.sh#CCI)
+`else`
+download [config_mfem_pumi.sh](config_mfem_pumi.sh#CCI)
 * change the `install path` in the configuration file to your `mfem_build` directory and do `module load cmake`.
-* source the given configuration file accordingly. Please see [this](overview.md) for details on installing `mfem`.
+* source the given configuration file accordingly. Please see [this](http://www.optimaldesignlab.com/optimaldesignlab-wiki/en/#!pages/mfem/overview.md) for details on installing `mfem`.
 
 **Final Note:** All the `notes` given above are from experience, they can be true/false in different situations.
