@@ -1,5 +1,7 @@
 # Git Version Control #
 
+We follow the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/) development model to manage our software development with git. Our repositories can be found our [github page](https://github.com/OptimalDesignLab). 
+
 ## Using git on CCI systems ##
 
 The CCI systems are normally not allowed to initiate outbound network communications. This means you cannot clone a github repository as you normally would on your computer. However, there is an exception that allows accessing github over https, but requires some special configuration. These instructions are compiled together from [these](https://secure.cci.rpi.edu/wiki/index.php?title=Proxy) [sources](https://help.github.com/en/github/authenticating-to-github/accessing-github-using-two-factor-authentication#using-two-factor-authentication-with-the-command-line).
