@@ -58,6 +58,9 @@ A more complex navigation example: ----------------------------------------
   * [C++ style guide](pages/cpp_style.md)
   * [C++ documentation guide](pages/cpp_doc.md)
 
+  * # Algorithmic Differentiation
+  * [Matrix Calculus](pages/matrix_calculus.md)
+
 [Numerical Methods]()
 
   * # Spatial Discretization
