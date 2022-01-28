@@ -4,7 +4,7 @@ README
 If you just want to get to the ODL wiki, use the following link:
 [http://www.optimaldesignlab.com/optimaldesignlab-wiki/](http://www.optimaldesignlab.com/optimaldesignlab-wiki/)
 
-**Important for ODL users**: You can ignore most of the instructions below.  We inherited these when we forked the orignal version from `exalted/mdwiki-seed`.  For us, reading the content from _Getting Started_ and below is sufficient.
+**Important for ODL users**: You can ignore most of the instructions below.  We inherited these when we forked the orignal version from `exalted/mdwiki-seed`.  If you are in the ODL lab and want to update/add a page, _follow the instructions on the home page of the wiki itself_.
 
 First things first
 ------------------
