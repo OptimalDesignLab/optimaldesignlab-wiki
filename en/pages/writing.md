@@ -30,7 +30,8 @@ I write the abstract last, since it is a summary of the paper.  The abstract sho
 
 ## Other Resources
 
-We have access to Joshua Schimel's book _"Writing Science: how to write papers that get cited and proposals that get funded"_ as an e-book through the RPI library.  I highly recomend this book.  We read several chapters as part of our literature review in 2017/2018, and we will likely do so again.  While the author comes from a different field, his general remarks are quite universal.
+* I really like the following paper, which was published as an editorial for _PLOS Computational Biology_: [Ten simple rules for structuring papers](uploads/pdf/Ten_simple_rules_for_structuring_papers.pdf).  In fact, if you are in the lab, you should read this paper before writing anything.
+* We have access to Joshua Schimel's book _"Writing Science: how to write papers that get cited and proposals that get funded"_ as an e-book through the RPI library.  I recommend this book.  We read several chapters as part of our literature review in 2017/2018, and we will likely do so again.  While the author comes from a different field, his general remarks are quite universal.
 
 ---
 
