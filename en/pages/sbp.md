@@ -1,4 +1,5 @@
 [gimmick: math]()
+
 # Summation-by-parts Operators
 
 The lab develops and uses discretizations based on summation-by-parts (SBP) operators; therefore, the objective of this page is to introduce these operators and describe their salient characteristics.

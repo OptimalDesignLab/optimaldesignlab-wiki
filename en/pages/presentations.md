@@ -6,9 +6,9 @@ Jean-luc Doumont has some good pointers about creating slides and presentations,
 
 [Doumont: traditions, templates, and group leaders](uploads/pdf/Doumont_traditions_templates_and_group_leaders_barriers_to_effective_communication.pdf)
 
-## Creating effective slides: Design, Construction, and Use in Science 
+## Creating effective slides: Design, Construction, and Use in Science
 
-[](http://youtu.be/meBXuTIPJQk)
+[![Creating effective slides: Design, Construction, and Use in Science](http://img.youtube.com/vi/meBXuTIPJQk/0.jpg)](https://www.youtube.com/watch?v=meBXuTIPJQk "Creating effective slides: Design, Construction, and Use in Science")
 
 ## Other Useful Links
 
