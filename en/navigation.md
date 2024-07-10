@@ -43,16 +43,13 @@ A more complex navigation example: ----------------------------------------
   * # Version control
   * [git](pages/git.md)
   - - - -
-  * # PDESolver/Ticon
-  * [Building PDESolver](pages/pdesolver/building.md)
-  * [Getting PDESolver working on DRP](pages/pdesolver/drp.md)
-  * [future API notes](pages/notes_on_solver_interface.md)
-  * [Making Meshes](pages/pdesolver/airfoil_mesh.md)
-  - - - -
   * # MFEM
   * [MFEM Overview](pages/mfem/overview.md)
   * [MFEM on SCOREC](pages/mfem/mfem-scorec.md)
-
+  * [Making Meshes](pages/pdesolver/airfoil_mesh.md)
+  - - - -
+  * # MISO
+  * [Compiling MISO](pages/miso/compile.md)
   - - - -
   * # C++
   * [C++ style guide](pages/cpp_style.md)
@@ -104,6 +101,13 @@ A more complex navigation example: ----------------------------------------
   * [Candidacy](pages/candidacy.md)
   * [Suggested courses to take](pages/suggested_courses.md)
 
+<!---
+- - - -
+  * # PDESolver/Ticon
+  * [Building PDESolver](pages/pdesolver/building.md)
+  * [Getting PDESolver working on DRP](pages/pdesolver/drp.md)
+  * [future API notes](pages/notes_on_solver_interface.md)
+  -->
 
 <!---
   -- Change the Language
