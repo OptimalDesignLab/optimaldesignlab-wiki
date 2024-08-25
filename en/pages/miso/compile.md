@@ -63,7 +63,9 @@ mkdir build
 
 ```
 
-Dowload MISO configuration file [config_miso.sh](config_miso.sh) and move it to `/lore/idrish/Developer/motor/MISO/build/`. The default build type is "Release" (`-DCMAKE_BUILD_TYPE=Release`) which run much faster than "Debug". The option should be chamged from `Release` to `Debug` if MISO needs to be compiled with Debug flag. **Note:** The config file is also set to locate adept-install, mfem, and core in the same directory as MISO (i.e /lore/idrish/Developer/motor/)
+Dowload MISO configuration file [config_miso.sh](config_miso.sh) and move it to `/lore/idrish/Developer/motor/MISO/build/`. The default build type is "Release" (`-DCMAKE_BUILD_TYPE=Release`) which run much faster than "Debug". The option should be chamged from `Release` to `Debug` if MISO needs to be compiled with Debug flag.
+
+ **Note:** The config file is also set to locate adept-install, mfem, and core in the same directory as MISO (i.e /lore/idrish/Developer/motor/)
 
 Finally, build or compile MISO using the commands below:
 
