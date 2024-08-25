@@ -8,12 +8,14 @@ To build `MISO`, the MISO directory should be in the same directory as the other
 
 ## Clone MISO repository from GitHub
 Navigate to the packages directory then clone MISO from GitHub using these commands
-```
+
+```bash
 cd /lore/idrish/Developer/motor/
 git clone https://github.com/OptimalDesignLab/MISO.git
 ```
-Depending on the MISO branch you will be working with, checkout the appropriate commit hash. See example below
-```
+Depending on the MISO branch you will be working with, checkout the appropriate commit hash. See example below:
+
+```bash
 cd /lore/idrish/Developer/motor/MISO
 git checkout cd7e53714ae3d3c6d4256d66a2ee67562224f47e
 git pull
@@ -25,6 +27,7 @@ git pull
 Ensure you have your python environment enabled and load the following modules. Adding to library and shared library paths may not be necessary but this helped me fixed some problems. The specific paths to add may differ depending on versions and updates made on SCOREC. These packages may as well be installed on local machines.
 
 ```bash
+# Load correct modules
 module use /opt/scorec/spack/rhel9/v0201_4/lmod/linux-rhel9-x86_64/Core
 module load gcc/12.3.0-iil3lno
 module load python/3.10.10-fy3aixq 
@@ -40,27 +43,21 @@ export LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/g
 export LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/gcc-12.3.0/hypre-2.28.0-dljbagffd2rfhfkwt74jbi3q66maayyo/lib/:$LIBRARY_PATH
 
 # Adding to shared library path
-export LD_LIBRARY_PATH=$VIRTUAL_ENV/lib
-export LD_LIBRARY_PATH=/lore/idrish/Developer/motor/OpenCASCADE-7.4.1/lib/:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/lore/idrish/Developer/motor/EngSketchPad/lib/:$LD_LIBRARY_PATH 
 export LD_LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/gcc-12.3.0/hypre-2.28.0-dljbagffd2rfhfkwt74jbi3q66maayyo/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/gcc-12.3.0/metis-5.1.0-65szzoyrtgauis34eop3w5zu6v6uarer/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/gcc-12.3.0/mpich-4.1.1-xpoyz4tqgfxtrm6m7qq67q4ccp5pnlre/lib/:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=/opt/scorec/spack/rhel9/v0201_4/install/linux-rhel9-x86_64/gcc-12.3.0/openblas-0.3.23-wqm7iudhdwsidvto7nddxjyi7ow2lhwy/lib/:$LD_LIBRARY_PATH
-
-
 ```
 
-You will need to load all these each time you open a new terminal. Hence, it is strongly adviced to add these to a `.sh` file and `source` each time a new terminal is launched.
+You will need to load all these each time you open a new terminal. Hence, it is strongly adviced to add these to a `.sh` file and `source` each time a new terminal is launched. You may also need to add to these.
 
 ## Build MISO
 Navigate to MISO directory, create build subdirectory, then add/create a config file for building MISO
 
-```
+```bash
 cd /lore/idrish/Developer/motor/
 cd MISO
 mkdir build
-
 ```
 
 Dowload MISO configuration file [config_miso.sh](config_miso.sh) and move it to `/lore/idrish/Developer/motor/MISO/build/`. The default build type is "Release" (`-DCMAKE_BUILD_TYPE=Release`) which run much faster than "Debug". The option should be chamged from `Release` to `Debug` if MISO needs to be compiled with Debug flag.
@@ -78,4 +75,27 @@ make install
 
 These commands configure `MISO` using the configuration seetings in the config file and compile `MISO` in parrallel using 4 processors. This is faster than compiling in series with just `make`. 
 
-*This page is being worked on...*
+
+## MISO Test
+Build and run MISO tests with this command
+
+```bash
+cd /lore/idrish/Developer/motor/MISO/build/
+make tests
+```
+
+## Rebuilding MISO
+MISO may have to be rebuilt for a lot of reasons. In such situation, follow the following steps to rebuild MISO:
+
+```bash
+cd /lore/idrish/Developer/motor/MISO/
+cd build/
+rm CMakeCache.txt
+make clean
+make distclean
+source config.sh 
+make -j 4
+make install
+make tests
+```
+It is fine if `make clean` or/and `make distclean` throw error similar to "*there is no rule to*" clean.
